@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- Заголовок -->
+
+    <!-- Зображення -->
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:text="Фото фрагмент"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="@android:color/darker_gray"
+        android:scaleType="centerCrop" />
+
+    <!-- Кнопка зробити фото -->
+    <Button
+        android:id="@+id/button_take_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Зробити фото"/>
+
+    <!-- Кнопка вибрати фото -->
+    <Button
+        android:id="@+id/button_choose_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вибрати фото"/>
+
+    <!-- Кнопка перейти в другий фрагмент -->
+    <Button
+        android:id="@+id/button_go_to_fragment2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Перейти в другий фрагмент"/>
+
+    <!-- Кнопка перейти в третій фрагмент -->
+    <Button
+        android:id="@+id/button_go_to_fragment3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Перейти в третій фрагмент"/>
+
+</LinearLayout>

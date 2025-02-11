@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- Заголовок -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Другий фрагмент"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
+
+    <!-- Кнопка перейти на ФотоФрагмент -->
+    <Button
+        android:id="@+id/button_to_photo_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Перейти на ФотоФрагмент"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Кнопка перейти на ТретійФрагмент -->
+    <Button
+        android:id="@+id/button_to_third_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Перейти на Третій Фрагмент"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
