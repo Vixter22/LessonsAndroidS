@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:id="@+id/nav_products"
+        android:icon="@drawable/ic_products"
+        android:title="Продукти" />
     <item
-        android:id="@+id/nav_list"
-        android:icon="@drawable/ic_list"
-        android:title="List" />
+        android:id="@+id/nav_cart"
+        android:icon="@drawable/ic_cart"
+        android:title="Корзина" />
     <item
-        android:id="@+id/nav_mystery"
-        android:icon="@drawable/ic_mystery"
-        android:title="Mystery" />
+        android:id="@+id/nav_info"
+        android:icon="@drawable/ic_info"
+        android:title="Про магазин" />
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_profile"
-        android:title="Profile" />
+        android:title="Профіль" />
 </menu>

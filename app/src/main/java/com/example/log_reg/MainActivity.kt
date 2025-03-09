@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             val startFragment: Fragment = if (isLoggedIn) {
                 bottomNav.visibility = View.VISIBLE  // Показуємо меню після входу
-                HomeFragment()
+                ProductsFragment()
             } else {
                 bottomNav.visibility = View.GONE  // Приховуємо меню на екрані логіну
                 LoginFragment()
@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.setOnItemSelectedListener { item ->
             val selectedFragment: Fragment = when (item.itemId) {
-                R.id.nav_home -> HomeFragment()
-                R.id.nav_list -> ListFragment()
-                R.id.nav_mystery -> MysteryFragment()
+                R.id.nav_products -> ProductsFragment()
+                R.id.nav_cart -> CartFragment()
+                R.id.nav_info -> InfoFragment()
                 R.id.nav_profile -> ProfileFragment()
-                else -> HomeFragment()
+                else -> ProductsFragment()
             }
 
             supportFragmentManager.beginTransaction()
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.visibility = View.VISIBLE  // Показуємо меню після логіну
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, HomeFragment())
+            .replace(R.id.fragment_container, ProductsFragment())
             .commit()
     }
 
