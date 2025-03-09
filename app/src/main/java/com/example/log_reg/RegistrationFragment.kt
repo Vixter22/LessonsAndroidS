@@ -1,7 +1,5 @@
 package com.example.log_reg
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -11,6 +9,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.log_reg.data.AppDatabase
+import com.example.log_reg.data.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegistrationFragment : Fragment() {
 
@@ -22,6 +27,7 @@ class RegistrationFragment : Fragment() {
     private lateinit var editTextAbout: EditText
     private lateinit var buttonRegister: Button
     private lateinit var buttonBack: Button
+    private lateinit var database: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +38,8 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        database = AppDatabase.getInstance(requireContext())
 
         editTextUsername = view.findViewById(R.id.editTextUsername)
         editTextPassword = view.findViewById(R.id.editTextPassword)
@@ -47,10 +55,6 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun registerUser() {
-        val sharedPreferences: SharedPreferences =
-            requireActivity().getSharedPreferences("Users", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
         val username = editTextUsername.text.toString().trim()
         val password = editTextPassword.text.toString().trim()
         val name = editTextName.text.toString().trim()
@@ -59,7 +63,8 @@ class RegistrationFragment : Fragment() {
         val about = editTextAbout.text.toString().trim()
 
         if (username.isEmpty() || password.isEmpty() || name.isEmpty() ||
-            email.isEmpty() || birthDate.isEmpty() || about.isEmpty()) {
+            email.isEmpty() || birthDate.isEmpty() || about.isEmpty()
+        ) {
             Toast.makeText(activity, "Заповніть усі поля!", Toast.LENGTH_SHORT).show()
             return
         }
@@ -74,22 +79,35 @@ class RegistrationFragment : Fragment() {
             return
         }
 
-        // Перевіряємо, чи користувач уже існує
-        if (sharedPreferences.contains(username)) {
-            Toast.makeText(activity, "Цей логін уже використовується!", Toast.LENGTH_SHORT).show()
-            return
+        lifecycleScope.launch(Dispatchers.IO) {
+            // Перевіряємо, чи існує користувач з таким логіном, отримуючи дані через Flow та викликаючи first()
+            val existingUser = database.userDao().getUser(username).first()
+            if (existingUser != null) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(activity, "Цей логін уже використовується!", Toast.LENGTH_SHORT).show()
+                }
+                return@launch
+            }
+
+            // Створюємо нового користувача (роль за замовчуванням – CLIENT)
+            val newUser = User(
+                username = username,
+                password = password,
+                role = "CLIENT",
+                name = name,
+                email = email,
+                birthDate = birthDate,
+                about = about,
+                avatar = null
+            )
+
+            database.userDao().registerUser(newUser)
+
+            withContext(Dispatchers.Main) {
+                Toast.makeText(activity, "Реєстрація успішна!", Toast.LENGTH_SHORT).show()
+                navigateToLogin()
+            }
         }
-
-        // Зберігаємо дані користувача правильно
-        editor.putString(username, password) // Зберігаємо пароль за ключем "username"
-        editor.putString("$username-name", name)
-        editor.putString("$username-email", email)
-        editor.putString("$username-birthDate", birthDate)
-        editor.putString("$username-about", about)
-        editor.apply()
-
-        Toast.makeText(activity, "Реєстрація успішна!", Toast.LENGTH_SHORT).show()
-        navigateToLogin()
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -105,10 +123,7 @@ class RegistrationFragment : Fragment() {
         val monthInt = month.toInt()
         val yearInt = year.toInt()
 
-        if (dayInt !in 1..31 || monthInt !in 1..12 || yearInt !in 1900..2024) {
-            return false
-        }
-        return true
+        return dayInt in 1..31 && monthInt in 1..12 && yearInt in 1900..2024
     }
 
     private fun navigateToLogin() {

@@ -1,9 +1,6 @@
 package com.example.log_reg
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +10,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.log_reg.data.AppDatabase
+import com.example.log_reg.data.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -28,16 +31,20 @@ class ProfileFragment : Fragment() {
     private lateinit var editTextBirthDate: EditText
     private lateinit var editTextAbout: EditText
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var database: AppDatabase
     private var tempAvatarUri: Uri? = null
+    private var currentUsername: String? = null
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            Log.d("ProfileFragment", "📷 Обране фото: $uri")
-            tempAvatarUri = uri
-            avatarImageView.setImageURI(uri)
+    // Збереження завантажених даних користувача
+    private var currentUser: User? = null
+
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                tempAvatarUri = it
+                avatarImageView.setImageURI(it)
+            }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +56,9 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Ініціалізуємо базу даних Room
+        database = AppDatabase.getInstance(requireContext())
+
         deleteAccountButton = view.findViewById(R.id.btn_delete_account)
         logoutButton = view.findViewById(R.id.btn_logout)
         avatarImageView = view.findViewById(R.id.img_avatar)
@@ -59,7 +69,16 @@ class ProfileFragment : Fragment() {
         editTextBirthDate = view.findViewById(R.id.editTextBirthDate)
         editTextAbout = view.findViewById(R.id.editTextAbout)
 
-        sharedPreferences = requireActivity().getSharedPreferences("Users", Context.MODE_PRIVATE)
+        // Отримуємо username з SharedPreferences
+        val sessionPref = requireActivity().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        currentUsername = sessionPref.getString("current_user", null)
+
+        if (currentUsername == null) {
+            Toast.makeText(requireContext(), "Помилка: користувач не знайдений!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Завантаження даних користувача через LiveData
         loadUserProfile()
 
         logoutButton.setOnClickListener {
@@ -80,87 +99,60 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUserProfile() {
-        val sessionPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        val username = sessionPref.getString("current_user", null)
+        database.userDao().getUserProfile(currentUsername!!).observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                currentUser = user
+                editTextName.setText(user.name)
+                editTextEmail.setText(user.email)
+                editTextBirthDate.setText(user.birthDate)
+                editTextAbout.setText(user.about)
 
-        if (username == null) {
-            Log.e("ProfileFragment", "❌ Користувач не знайдений!")
-            return
-        }
-
-        val avatarUriString = sharedPreferences.getString("$username-avatar", null)
-        if (!avatarUriString.isNullOrEmpty()) {
-            val savedUri = Uri.parse(avatarUriString)
-            val file = File(savedUri.path ?: "")
-
-            if (file.exists()) {
-                avatarImageView.setImageURI(savedUri)
-                Log.d("ProfileFragment", "✅ Фото завантажено: $savedUri")
-            } else {
-                Log.e("ProfileFragment", "❌ Файл не знайдено: $savedUri")
-                avatarImageView.setImageResource(R.drawable.ic_avatar_placeholder)
+                val avatarUri = user.avatar?.let { Uri.parse(it) }
+                if (avatarUri != null) {
+                    avatarImageView.setImageURI(avatarUri)
+                } else {
+                    avatarImageView.setImageResource(R.drawable.ic_avatar_placeholder)
+                }
             }
-        } else {
-            avatarImageView.setImageResource(R.drawable.ic_avatar_placeholder)
         }
-
-        editTextName.setText(sharedPreferences.getString("$username-name", ""))
-        editTextEmail.setText(sharedPreferences.getString("$username-email", ""))
-        editTextBirthDate.setText(sharedPreferences.getString("$username-birthDate", ""))
-        editTextAbout.setText(sharedPreferences.getString("$username-about", ""))
     }
 
     private fun saveUserProfile() {
-        val sessionPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        val username = sessionPref.getString("current_user", null)
-
-        if (username == null) {
-            Toast.makeText(requireContext(), "Помилка: користувач не знайдений!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         val name = editTextName.text.toString().trim()
         val email = editTextEmail.text.toString().trim()
         val birthDate = editTextBirthDate.text.toString().trim()
         val about = editTextAbout.text.toString().trim()
 
-        with(sharedPreferences.edit()) {
-            putString("$username-name", name)
-            putString("$username-email", email)
-            putString("$username-birthDate", birthDate)
-            putString("$username-about", about)
-            apply()
-        }
+        // Зберігаємо нову аватарку, якщо обрано
+        val photoPath = tempAvatarUri?.let { saveImageToInternalStorage(it) }
 
-        tempAvatarUri?.let { uri ->
-            val savedUri = saveImageToInternalStorage(uri)
-            if (savedUri != null) {
-                with(sharedPreferences.edit()) {
-                    putString("$username-avatar", savedUri.toString())
-                    apply()
-                }
-                Log.d("ProfileFragment", "✅ Фото збережено: $savedUri")
-            } else {
-                Log.e("ProfileFragment", "❌ Помилка збереження фото")
+        // Оновлюємо дані користувача
+        val userToUpdate = currentUser?.copy(
+            name = name,
+            email = email,
+            birthDate = birthDate,
+            about = about,
+            avatar = photoPath ?: currentUser?.avatar
+        ) ?: return
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            database.userDao().updateUserProfile(userToUpdate)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "Профіль збережено!", Toast.LENGTH_SHORT).show()
             }
         }
-
-        Toast.makeText(requireContext(), "Профіль збережено!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun saveImageToInternalStorage(uri: Uri): Uri? {
+    private fun saveImageToInternalStorage(uri: Uri): String? {
         return try {
-            val fileName = "profile_avatar.jpg"
-            val file = File(requireContext().filesDir, fileName)
-
+            val file = File(requireContext().filesDir, "profile_${currentUsername}.jpg")
             requireContext().contentResolver.openInputStream(uri)?.use { inputStream ->
                 FileOutputStream(file).use { outputStream ->
                     inputStream.copyTo(outputStream)
                 }
             }
-
-            Log.d("ProfileFragment", "✅ Фото збережено в: ${file.absolutePath}")
-            Uri.fromFile(file)
+            Log.d("ProfileFragment", "✅ Фото збережено: ${file.absolutePath}")
+            file.absolutePath
         } catch (e: Exception) {
             Log.e("ProfileFragment", "❌ Помилка збереження фото", e)
             null
@@ -177,31 +169,16 @@ class ProfileFragment : Fragment() {
     }
 
     private fun deleteAccount() {
-        val sessionPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        val username = sessionPref.getString("current_user", null)
-
-        if (username != null) {
-            with(sharedPreferences.edit()) {
-                remove(username) // Видаляємо пароль користувача
-                remove("$username-name")
-                remove("$username-email")
-                remove("$username-birthDate")
-                remove("$username-about")
-                remove("$username-avatar")
-                apply()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val rowsDeleted = database.userDao().deleteUser(currentUsername!!)
+            withContext(Dispatchers.Main) {
+                if (rowsDeleted > 0) {
+                    Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
+                    (activity as? MainActivity)?.logoutUser()
+                } else {
+                    Toast.makeText(requireContext(), "Помилка видалення акаунта!", Toast.LENGTH_SHORT).show()
+                }
             }
-
-            with(sessionPref.edit()) {
-                remove("current_user")
-                apply()
-            }
-
-            Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
-
-            // Викликаємо logoutUser(), який вже приховує панель меню
-            (activity as? MainActivity)?.logoutUser()
-        } else {
-            Toast.makeText(requireContext(), "Помилка: користувач не знайдений!", Toast.LENGTH_SHORT).show()
         }
     }
 }

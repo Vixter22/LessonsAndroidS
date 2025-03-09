@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt") // ✅ Додаємо KAPT для Room
 }
 
 android {
@@ -34,6 +35,10 @@ android {
         jvmTarget = "11"
     }
 }
+// Додаємо блок kapt на одному рівні з android
+kapt {
+    correctErrorTypes = true
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -45,6 +50,11 @@ dependencies {
     // ✅ Додаємо бібліотеки для Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+
+    // ✅ Додаємо Room
+    implementation("androidx.room:room-runtime:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2") // Для роботи з корутинами
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

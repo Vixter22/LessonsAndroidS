@@ -12,94 +12,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp" />
 
-    <!-- Аватарка -->
-    <ImageView
-        android:id="@+id/img_avatar"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_avatar_placeholder"
-        android:background="@android:color/darker_gray"
-        android:scaleType="centerCrop"
-        android:layout_below="@id/btn_logout"
-        android:clipToOutline="true" />
-
-    <!-- Кнопка редагування аватару -->
-    <Button
-        android:id="@+id/btn_edit_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Змінити фото"
-        android:layout_below="@id/img_avatar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
-    <!-- Поля особистої інформації -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_edit_avatar"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ім'я" />
-
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ім'я" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email" />
-
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Дата народження" />
-
-        <EditText
-            android:id="@+id/editTextBirthDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Дата народження (дд-мм-рррр)"
-            android:inputType="date" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Про себе" />
-
-        <EditText
-            android:id="@+id/editTextAbout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Про себе"
-            android:inputType="textMultiLine" />
-    </LinearLayout>
-
-    <!-- Кнопка "Зберегти профіль" внизу -->
-    <Button
-        android:id="@+id/btn_save_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Зберегти профіль"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="2dp" />
-
+    <!-- Кнопка "Видалити акаунт" у верхній частині екрана -->
     <Button
         android:id="@+id/btn_delete_account"
         android:layout_width="wrap_content"
@@ -109,5 +22,105 @@
         android:layout_margin="16dp"
         android:backgroundTint="@android:color/holo_red_dark"
         android:textColor="@android:color/white"/>
+
+    <!-- ScrollView для прокрутки -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btn_delete_account"
+        android:fillViewport="true"
+        android:layout_above="@id/btn_save_profile">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="150dp">
+
+            <!-- Аватарка -->
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_avatar_placeholder"
+                android:background="@android:color/darker_gray"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true" />
+
+            <!-- Кнопка редагування аватару -->
+            <Button
+                android:id="@+id/btn_edit_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Змінити фото"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" />
+
+            <!-- Поля особистої інформації -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ім'я" />
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ім'я" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата народження" />
+
+            <EditText
+                android:id="@+id/editTextBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Дата народження (дд-мм-рррр)"
+                android:inputType="date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Про себе" />
+
+            <EditText
+                android:id="@+id/editTextAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Про себе"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="6"
+                android:gravity="top"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Кнопка "Зберегти профіль" внизу -->
+    <Button
+        android:id="@+id/btn_save_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Зберегти профіль"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="2dp" />
 
 </RelativeLayout>
