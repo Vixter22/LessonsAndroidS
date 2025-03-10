@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -11,6 +12,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 🔴 Вимикаємо темну тему для всього застосунку
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -53,11 +57,11 @@ class MainActivity : AppCompatActivity() {
     fun loginSuccess() {
         val sharedPref = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            putBoolean("isLoggedIn", true)  // Зберігаємо статус логіну
+            putBoolean("isLoggedIn", true)
             apply()
         }
 
-        bottomNav.visibility = View.VISIBLE  // Показуємо меню після логіну
+        bottomNav.visibility = View.VISIBLE
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, ProductsFragment())
@@ -67,11 +71,11 @@ class MainActivity : AppCompatActivity() {
     fun logoutUser() {
         val sharedPref = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            putBoolean("isLoggedIn", false)  // Вихід із системи
+            putBoolean("isLoggedIn", false)
             apply()
         }
 
-        bottomNav.visibility = View.GONE  // Приховуємо меню при виході
+        bottomNav.visibility = View.GONE
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, LoginFragment())

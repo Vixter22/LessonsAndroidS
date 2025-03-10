@@ -1,44 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center"
     android:layout_gravity="center">
 
+    <!-- Заголовок -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Логін"
+        android:text="Увійдіть до свого акаунту"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="#3E3E3E"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Поле введення логіну -->
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Логін" />
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Логін"
+        android:padding="12dp"
+        android:elevation="4dp"
+        android:textColor="#3E3E3E" />
 
+    <!-- Поле введення пароля -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_background"
         android:hint="Пароль"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:elevation="4dp"
+        android:textColor="#3E3E3E"/>
 
-    <Button
+    <!-- Кнопка Увійти -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/button_red"
+        android:backgroundTint="@null"
         android:text="Увійти"
-        android:layout_marginTop="200dp"/>
+        android:textColor="@android:color/white"
+        style="@null"/>
 
-    <Button
+    <!-- Кнопка Зареєструватися -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/button_red"
+        android:backgroundTint="@null"
         android:text="Зареєструватися"
-        android:layout_marginTop="4dp"/>
+        android:textColor="@android:color/white"
+        style="@null"/>
 </LinearLayout>

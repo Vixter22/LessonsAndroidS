@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:fillViewport="true">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,50 +13,82 @@
         android:padding="16dp"
         android:gravity="center">
 
+        <!-- Заголовок -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Реєстрація"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="#3E3E3E"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення логіну -->
         <EditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Логін"
-            android:inputType="text"/>
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення пароля -->
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Пароль"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення імені -->
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ім'я"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення Email -->
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення дати народження -->
         <EditText
             android:id="@+id/editTextBirthDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Дата народження (дд-мм-рррр)"
             android:inputType="text"
-            android:maxLength="10"/>
+            android:maxLength="10"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Поле введення "Про себе" -->
         <EditText
             android:id="@+id/editTextAbout"
             android:layout_width="match_parent"
@@ -63,20 +96,36 @@
             android:hint="Про себе"
             android:inputType="textMultiLine"
             android:minLines="3"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:textColor="#3E3E3E"
+            android:layout_marginBottom="16dp"/>
 
-        <Button
+        <!-- Кнопка Зареєструватися -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_red"
+            android:backgroundTint="@null"
             android:text="Зареєструватися"
-            android:layout_marginTop="100dp"/>
+            android:textColor="@android:color/white"
+            style="@null"/>
 
-        <Button
+        <!-- Кнопка Назад до входу -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Назад до входу"/>
+            android:layout_marginTop="4dp"
+            android:background="@drawable/button_red"
+            android:backgroundTint="@null"
+            android:text="Назад до входу"
+            android:textColor="@android:color/white"
+            style="@null"/>
 
     </LinearLayout>
 </ScrollView>
