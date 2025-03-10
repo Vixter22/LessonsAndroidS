@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="#F5F5F5"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="#F5F5F5"
+        android:padding="10dp">
+
+        <!-- Зображення товару -->
+        <ImageView
+            android:id="@+id/imageViewProduct"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <!-- Назва товару -->
+        <TextView
+            android:id="@+id/textViewProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#3E3E3E"
+            android:text="Назва товару"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="4dp" />
+
+        <!-- Ціна товару -->
+        <TextView
+            android:id="@+id/textViewProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="125 грн"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+        <!-- Кнопка Купити -->
+        <Button
+            android:id="@+id/buttonBuy"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Купити"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_red"
+            android:backgroundTint="@null"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -35,6 +35,7 @@ android {
         jvmTarget = "11"
     }
 }
+
 // Додаємо блок kapt на одному рівні з android
 kapt {
     correctErrorTypes = true
@@ -55,6 +56,10 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2") // Для роботи з корутинами
+
+    // ✅ Додаємо Glide для завантаження зображень
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
