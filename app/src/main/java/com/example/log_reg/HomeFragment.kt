@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,7 +14,7 @@ import com.example.log_reg.data.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductsFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
@@ -22,7 +23,7 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_products, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,6 +37,17 @@ class ProductsFragment : Fragment() {
         // Ініціалізуємо адаптер із порожнім списком
         productAdapter = ProductAdapter(emptyList())
         recyclerView.adapter = productAdapter
+
+        // Обробка кліку на сердечко
+        val heartIcon = view.findViewById<ImageView>(R.id.ivWishlist)
+        heartIcon.setOnClickListener {
+            // Перехід до WishlistFragment
+            val wishlistFragment = WishlistFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, wishlistFragment) // R.id.fragmentContainer – контейнер для фрагментів
+                .addToBackStack(null)
+                .commit()
+        }
 
         // Отримуємо DAO
         val db = AppDatabase.getInstance(requireContext())

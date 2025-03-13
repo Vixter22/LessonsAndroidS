@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="#F5F5F5"
+    android:background="@android:color/white"
     android:clickable="true"
     android:focusable="true">
 
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:background="#F5F5F5"
+        android:background="@android:color/white"
         android:padding="10dp">
 
         <!-- Зображення товару -->

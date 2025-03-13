@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Стан коли EditText у фокусі (при кліку) – товстіше обведення -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="2dp" android:color="#FF0000"/>
+            <corners android:radius="4dp"/>
+        </shape>
+    </item>
+    <!-- Стан за замовчуванням -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="1dp" android:color="#FF0000"/>
+            <corners android:radius="4dp"/>
+        </shape>
+    </item>
+</selector>

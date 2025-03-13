@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [User::class, Product::class],
-    version = 12,
+    entities = [User::class, Product::class, CartItem::class, Order::class, OrderItem::class, WishlistItem::class],
+    version = 13,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun productDao(): ProductDao // <-- додаємо метод для ProductDao
+    abstract fun productDao(): ProductDao
 
     companion object {
         @Volatile

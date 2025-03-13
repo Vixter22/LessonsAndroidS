@@ -8,10 +8,10 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <!-- Білий контейнер із тінню -->
+    <!-- Білий прямокутний контейнер із тінню, який займає всю ширину та знаходиться у верхній частині -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         app:cardElevation="4dp"
         app:cardCornerRadius="0dp"
         app:cardBackgroundColor="#FFFFFF"
@@ -19,38 +19,39 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:padding="8dp">
 
-            <!-- Назва "Кошик" -->
-            <TextView
-                android:id="@+id/tvCartTitle"
+            <!-- Поле пошуку з лупою і червоним обведенням -->
+            <EditText
+                android:id="@+id/etSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Кошик"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:gravity="start" />
+                android:hint="Пошук"
+                android:padding="8dp"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/search_edittext_background"/>
 
-            <!-- Іконка сердечка (переходить до WishlistFragment) -->
+            <!-- Іконка сердечка (кнопка Wishlist) -->
             <ImageView
                 android:id="@+id/ivWishlist"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="0dp"
                 android:src="@drawable/ic_heart"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView для списку товарів у кошику -->
+    <!-- RecyclerView для відображення списку продуктів -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCart"
+        android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp" />
+        android:layout_weight="1" />
 </LinearLayout>
