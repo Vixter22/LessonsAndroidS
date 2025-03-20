@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <!-- Контейнер заголовка -->
+    <!-- Заголовок -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -37,7 +37,7 @@
                 android:textColor="#000000"
                 android:gravity="start" />
 
-            <!-- Іконка сердечка (перехід до WishlistFragment) -->
+            <!-- Іконка сердечка -->
             <ImageView
                 android:id="@+id/ivWishlist"
                 android:layout_width="32dp"
@@ -46,11 +46,52 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView для відображення товарів з кошика -->
+    <!-- Повідомлення про порожній кошик -->
+    <TextView
+        android:id="@+id/tvEmptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Список кошика порожній"
+        android:gravity="center"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:textColor="#888888"/>
+
+    <!-- Список товарів -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="8dp" />
+
+    <!-- Блок з загальною вартістю та кнопкою "Оплатити" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvTotalCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Загальна вартість: 0 грн"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Кнопка "Оплатити" з дизайном як кнопка "Купити" -->
+        <Button
+            android:id="@+id/btnPay"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Оплатити"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_red"
+            android:backgroundTint="@null"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
 </LinearLayout>

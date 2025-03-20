@@ -11,7 +11,9 @@ import com.example.log_reg.data.CartDisplayItem
 
 class CartAdapter(
     private var cartDisplayItems: List<CartDisplayItem>,
-    private val onDeleteClick: (CartDisplayItem) -> Unit  // callback для видалення
+    private val onDeleteClick: (CartDisplayItem) -> Unit,
+    private val onIncreaseClick: (CartDisplayItem) -> Unit,
+    private val onDecreaseClick: (CartDisplayItem) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,6 +22,8 @@ class CartAdapter(
         val textViewProductPrice: TextView = itemView.findViewById(R.id.textViewCartProductPrice)
         val textViewCartQuantity: TextView = itemView.findViewById(R.id.textViewCartQuantity)
         val imageViewDelete: ImageView = itemView.findViewById(R.id.imageViewDelete)
+        val imageViewPlus: ImageView = itemView.findViewById(R.id.imageViewPlus)
+        val imageViewMinus: ImageView = itemView.findViewById(R.id.imageViewMinus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -32,8 +36,13 @@ class CartAdapter(
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val item = cartDisplayItems[position]
         holder.textViewProductName.text = item.product.name
-        holder.textViewProductPrice.text = "${item.product.price} грн"
-        holder.textViewCartQuantity.text = "Кількість: ${item.cartItem.quantity}"
+
+        // Обчислюємо загальну вартість для цього товару
+        val totalPrice = item.product.price * item.cartItem.quantity
+        holder.textViewProductPrice.text = "Ціна: $totalPrice грн"
+
+        holder.textViewCartQuantity.text = item.cartItem.quantity.toString()
+
         if (item.product.image.isNotEmpty()) {
             Glide.with(holder.itemView)
                 .load(item.product.image)
@@ -42,7 +51,17 @@ class CartAdapter(
             holder.imageViewProduct.setImageResource(R.drawable.ic_launcher_background)
         }
 
-        // Обробка кліку на іконку видалення
+        // Обробка кліку для збільшення кількості
+        holder.imageViewPlus.setOnClickListener {
+            onIncreaseClick(item)
+        }
+
+        // Обробка кліку для зменшення кількості
+        holder.imageViewMinus.setOnClickListener {
+            onDecreaseClick(item)
+        }
+
+        // Обробка кліку для видалення товару
         holder.imageViewDelete.setOnClickListener {
             onDeleteClick(item)
         }

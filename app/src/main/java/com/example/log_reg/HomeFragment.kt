@@ -64,14 +64,14 @@ class HomeFragment : Fragment() {
                             Product(
                                 name = "Локшина Miliket зі смаком курки",
                                 description = "",
-                                price = 34.99,
+                                price = 34.50,
                                 image = "https://images.prom.ua/6453514608_w640_h640_6453514608.jpg",
                                 stock = 1
                             ),
                             Product(
                                 name = "Локшина Miliket зі смаком креветок",
                                 description = "",
-                                price = 34.99,
+                                price = 34.50,
                                 image = "https://images.prom.ua/6450223248_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
                                 stock = 1
                             ),
