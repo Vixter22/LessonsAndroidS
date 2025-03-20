@@ -1,6 +1,7 @@
 package com.example.log_reg
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,20 +30,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ініціалізуємо RecyclerView
+        // Ініціалізація RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // Отримуємо екземпляр БД та DAO
+        // Отримання екземпляра бази даних та DAO
         val db = AppDatabase.getInstance(requireContext())
         val productDao = db.productDao()
-        val wishlistDao = db.wishlistItemDao()  // Переконайтеся, що цей метод реалізовано в AppDatabase
+        val wishlistDao = db.wishlistItemDao()
+        val cartItemDao = db.cartItemDao()
 
-        // Ініціалізуємо адаптер із порожнім списком, передаючи wishlistDao, userId (наприклад, 1) та lifecycleScope
-        productAdapter = ProductAdapter(emptyList(), wishlistDao, 1, viewLifecycleOwner.lifecycleScope)
+        // Ініціалізація адаптера (userId = 1, перевірте, що в таблиці User існує запис з id 1)
+        productAdapter = ProductAdapter(emptyList(), wishlistDao, cartItemDao, 1)
         recyclerView.adapter = productAdapter
 
-        // Обробка кліку на сердечко для переходу до WishlistFragment
+        // Обробка кліку на іконку вішліста для переходу до WishlistFragment
         val heartIcon = view.findViewById<ImageView>(R.id.ivWishlist)
         heartIcon.setOnClickListener {
             val wishlistFragment = WishlistFragment()
@@ -52,46 +54,51 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
-        // Перевіряємо, чи є в БД хоча б один продукт; якщо немає — додаємо 4 тестові
+        // Вставка тестових продуктів, якщо таблиця порожня
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val existingProducts = productDao.getAllProductsSync()
-            if (existingProducts.isEmpty()) {
-                productDao.insertAll(
-                    listOf(
-                        Product(
-                            name = "Локшина Miliket зі смаком курки",
-                            description = "",
-                            price = 34.99,
-                            image = "https://images.prom.ua/6453514608_w640_h640_6453514608.jpg",
-                            stock = 1
-                        ),
-                        Product(
-                            name = "Локшина Miliket зі смаком креветок",
-                            description = "",
-                            price = 34.99,
-                            image = "https://images.prom.ua/6450223248_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
-                            stock = 1
-                        ),
-                        Product(
-                            name = "Локшина Том Ям зі смаком креветок",
-                            description = "",
-                            price = 64.50,
-                            image = "https://images.prom.ua/6453611360_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
-                            stock = 1
-                        ),
-                        Product(
-                            name = "Локшина Hao Hao зі смаком креветок",
-                            description = "",
-                            price = 25.0,
-                            image = "https://images.prom.ua/6453560647_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
-                            stock = 1
+            try {
+                val existingProducts = productDao.getAllProductsSync()
+                if (existingProducts.isEmpty()) {
+                    productDao.insertAll(
+                        listOf(
+                            Product(
+                                name = "Локшина Miliket зі смаком курки",
+                                description = "",
+                                price = 34.99,
+                                image = "https://images.prom.ua/6453514608_w640_h640_6453514608.jpg",
+                                stock = 1
+                            ),
+                            Product(
+                                name = "Локшина Miliket зі смаком креветок",
+                                description = "",
+                                price = 34.99,
+                                image = "https://images.prom.ua/6450223248_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
+                                stock = 1
+                            ),
+                            Product(
+                                name = "Локшина Том Ям зі смаком креветок",
+                                description = "",
+                                price = 64.50,
+                                image = "https://images.prom.ua/6453611360_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
+                                stock = 1
+                            ),
+                            Product(
+                                name = "Локшина Hao Hao зі смаком креветок",
+                                description = "",
+                                price = 25.0,
+                                image = "https://images.prom.ua/6453560647_w640_h640_lokshina-shvidkogo-prigotuvannya.jpg",
+                                stock = 1
+                            )
                         )
                     )
-                )
+                    Log.d("HomeFragment", "Тестові продукти вставлено.")
+                }
+            } catch (ex: Exception) {
+                Log.e("HomeFragment", "Помилка вставки продуктів: ${ex.message}")
             }
         }
 
-        // Спостерігаємо за списком продуктів через LiveData
+        // Спостереження за списком продуктів через LiveData
         productDao.getAllProducts().observe(viewLifecycleOwner) { productList ->
             productAdapter.updateList(productList)
         }

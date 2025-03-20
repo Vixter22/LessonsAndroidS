@@ -54,8 +54,10 @@ class WishlistFragment : Fragment() {
 
         val db = AppDatabase.getInstance(requireContext())
         val wishlistDao = db.wishlistItemDao()
+        val cartItemDao = db.cartItemDao() // Додаємо DAO для кошика
 
-        wishlistAdapter = WishlistAdapter(emptyList(), wishlistDao, userId, viewLifecycleOwner.lifecycleScope)
+        // Передаємо і cartItemDao
+        wishlistAdapter = WishlistAdapter(emptyList(), wishlistDao, cartItemDao, userId, viewLifecycleOwner.lifecycleScope)
         recyclerView.adapter = wishlistAdapter
 
         // Спостереження за змінами у вішлісті
