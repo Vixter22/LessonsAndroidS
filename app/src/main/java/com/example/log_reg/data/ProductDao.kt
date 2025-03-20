@@ -19,4 +19,7 @@ interface ProductDao {
     // Синхронний виклик, щоб перевірити чи є дані
     @Query("SELECT * FROM products")
     fun getAllProductsSync(): List<Product>
+
+    @Query("SELECT * FROM products WHERE id = :productId LIMIT 1")
+    fun getProductByIdSync(productId: Int): Product?
 }

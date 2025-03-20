@@ -32,28 +32,27 @@ class HomeFragment : Fragment() {
         // Ініціалізуємо RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        // "2" означає два стовпчики
 
-        // Ініціалізуємо адаптер із порожнім списком
-        productAdapter = ProductAdapter(emptyList())
+        // Отримуємо екземпляр БД та DAO
+        val db = AppDatabase.getInstance(requireContext())
+        val productDao = db.productDao()
+        val wishlistDao = db.wishlistItemDao()  // Переконайтеся, що цей метод реалізовано в AppDatabase
+
+        // Ініціалізуємо адаптер із порожнім списком, передаючи wishlistDao, userId (наприклад, 1) та lifecycleScope
+        productAdapter = ProductAdapter(emptyList(), wishlistDao, 1, viewLifecycleOwner.lifecycleScope)
         recyclerView.adapter = productAdapter
 
-        // Обробка кліку на сердечко
+        // Обробка кліку на сердечко для переходу до WishlistFragment
         val heartIcon = view.findViewById<ImageView>(R.id.ivWishlist)
         heartIcon.setOnClickListener {
-            // Перехід до WishlistFragment
             val wishlistFragment = WishlistFragment()
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, wishlistFragment) // R.id.fragmentContainer – контейнер для фрагментів
+                .replace(R.id.fragment_container, wishlistFragment)
                 .addToBackStack(null)
                 .commit()
         }
 
-        // Отримуємо DAO
-        val db = AppDatabase.getInstance(requireContext())
-        val productDao = db.productDao()
-
-        // Перевіряємо, чи є в БД хоч один продукт; якщо немає — додаємо 4 тестові
+        // Перевіряємо, чи є в БД хоча б один продукт; якщо немає — додаємо 4 тестові
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val existingProducts = productDao.getAllProductsSync()
             if (existingProducts.isEmpty()) {

@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.log_reg.data.AppDatabase
 import com.example.log_reg.data.User
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -80,8 +79,8 @@ class RegistrationFragment : Fragment() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            // Перевіряємо, чи існує користувач з таким логіном, отримуючи дані через Flow та викликаючи first()
-            val existingUser = database.userDao().getUser(username).first()
+            // Перевірка, чи існує користувач з таким логіном
+            val existingUser = database.userDao().getUserSync(username)
             if (existingUser != null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(activity, "Цей логін уже використовується!", Toast.LENGTH_SHORT).show()
@@ -101,6 +100,7 @@ class RegistrationFragment : Fragment() {
                 avatar = null
             )
 
+            // Вставка нового користувача
             database.userDao().registerUser(newUser)
 
             withContext(Dispatchers.Main) {
@@ -117,12 +117,10 @@ class RegistrationFragment : Fragment() {
     private fun isValidBirthDate(birthDate: String): Boolean {
         val regex = Regex("""^(\d{2})-(\d{2})-(\d{4})$""")
         val matchResult = regex.find(birthDate) ?: return false
-
         val (day, month, year) = matchResult.destructured
         val dayInt = day.toInt()
         val monthInt = month.toInt()
         val yearInt = year.toInt()
-
         return dayInt in 1..31 && monthInt in 1..12 && yearInt in 1900..2024
     }
 

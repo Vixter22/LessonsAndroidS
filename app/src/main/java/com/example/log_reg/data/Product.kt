@@ -14,5 +14,3 @@ data class Product(
     val image: String,
     val stock: Int
 )
-
-

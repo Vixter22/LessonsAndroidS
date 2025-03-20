@@ -42,7 +42,7 @@
                 android:id="@+id/ivWishlist"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_heart"/>
+                android:src="@drawable/ic_heart_outline"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -12,9 +12,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 🔴 Вимикаємо темну тему для всього застосунку
+        // Вимикаємо темну тему для всього застосунку
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 bottomNav.visibility = View.VISIBLE  // Показуємо меню після входу
                 HomeFragment()
             } else {
-                bottomNav.visibility = View.GONE  // Приховуємо меню на екрані логіну
+                bottomNav.visibility = View.GONE     // Приховуємо меню на екрані логіну
                 LoginFragment()
             }
 
@@ -69,9 +68,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun logoutUser() {
+        // Очищення сесії: видаляємо збережені дані, включаючи userId
         val sharedPref = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            putBoolean("isLoggedIn", false)
+            clear()
             apply()
         }
 

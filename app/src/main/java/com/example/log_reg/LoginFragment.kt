@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.log_reg.data.AppDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -32,7 +31,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ініціалізація бази даних Room
         database = AppDatabase.getInstance(requireContext())
 
         editTextUsername = view.findViewById(R.id.editTextUsername)
@@ -54,12 +52,12 @@ class LoginFragment : Fragment() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            // Перевірка користувача за логіном та паролем за допомогою Flow
-            val user = database.userDao().checkUser(username, password).first()
+            val user = database.userDao().checkUserSync(username, password)
             withContext(Dispatchers.Main) {
                 if (user != null) {
                     Toast.makeText(activity, "Вхід успішний!", Toast.LENGTH_SHORT).show()
-                    saveLoginState(username)
+                    // Зберігаємо username та userId для поточної сесії
+                    saveLoginState(username, user.id)
                     (activity as? MainActivity)?.loginSuccess()
                 } else {
                     Toast.makeText(activity, "Невірний логін або пароль!", Toast.LENGTH_SHORT).show()
@@ -68,15 +66,15 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun saveLoginState(username: String) {
-        val sessionPref = requireActivity().getSharedPreferences(
-            "UserSession", android.content.Context.MODE_PRIVATE
-        )
+    private fun saveLoginState(username: String, userId: Int) {
+        val sessionPref = requireActivity().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
         with(sessionPref.edit()) {
             putBoolean("isLoggedIn", true)
             putString("current_user", username)
+            putInt("current_user_id", userId) // Переконуємось, що userId зберігається
             apply()
         }
+        Toast.makeText(requireContext(), "Збережено userId: $userId", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToRegister() {

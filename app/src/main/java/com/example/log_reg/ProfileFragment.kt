@@ -35,7 +35,6 @@ class ProfileFragment : Fragment() {
     private var tempAvatarUri: Uri? = null
     private var currentUsername: String? = null
 
-    // Збереження завантажених даних користувача
     private var currentUser: User? = null
 
     private val pickImageLauncher =
@@ -56,7 +55,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ініціалізуємо базу даних Room
+        // Ініціалізація бази даних
         database = AppDatabase.getInstance(requireContext())
 
         deleteAccountButton = view.findViewById(R.id.btn_delete_account)
@@ -69,7 +68,7 @@ class ProfileFragment : Fragment() {
         editTextBirthDate = view.findViewById(R.id.editTextBirthDate)
         editTextAbout = view.findViewById(R.id.editTextAbout)
 
-        // Отримуємо username з SharedPreferences
+        // Отримуємо username із SharedPreferences
         val sessionPref = requireActivity().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
         currentUsername = sessionPref.getString("current_user", null)
 
@@ -78,7 +77,7 @@ class ProfileFragment : Fragment() {
             return
         }
 
-        // Завантаження даних користувача через LiveData
+        // Завантаження даних користувача
         loadUserProfile()
 
         logoutButton.setOnClickListener {
@@ -151,10 +150,9 @@ class ProfileFragment : Fragment() {
                     inputStream.copyTo(outputStream)
                 }
             }
-            Log.d("ProfileFragment", "✅ Фото збережено: ${file.absolutePath}")
             file.absolutePath
         } catch (e: Exception) {
-            Log.e("ProfileFragment", "❌ Помилка збереження фото", e)
+            Log.e("ProfileFragment", "Помилка збереження фото", e)
             null
         }
     }

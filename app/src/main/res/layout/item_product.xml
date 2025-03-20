@@ -35,7 +35,7 @@
             android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="10dp" />
 
         <!-- Ціна товару -->
         <TextView
@@ -45,18 +45,36 @@
             android:text="125 грн"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="8dp" />
 
-        <!-- Кнопка Купити -->
-        <Button
-            android:id="@+id/buttonBuy"
+        <!-- Контейнер для сердечка та кнопки -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Купити"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_red"
-            android:backgroundTint="@null"
-            android:layout_marginTop="4dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-20dp"
+            android:orientation="vertical">
+
+            <!-- Іконка сердечка для вішлісту (збільшена і вирівняна праворуч) -->
+            <ImageView
+                android:id="@+id/imageViewWishlist"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="end"
+                android:padding="4dp"
+                android:src="@drawable/ic_heart_outline"
+                android:contentDescription="Додати до вішлісту" />
+
+            <!-- Кнопка Купити -->
+            <Button
+                android:id="@+id/buttonBuy"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Купити"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_red"
+                android:backgroundTint="@null"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
