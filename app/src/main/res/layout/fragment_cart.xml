@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <!-- Білий контейнер із тінню -->
+    <!-- Контейнер заголовка -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -37,7 +37,7 @@
                 android:textColor="#000000"
                 android:gravity="start" />
 
-            <!-- Іконка сердечка (переходить до WishlistFragment) -->
+            <!-- Іконка сердечка (перехід до WishlistFragment) -->
             <ImageView
                 android:id="@+id/ivWishlist"
                 android:layout_width="32dp"
@@ -46,7 +46,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView для списку товарів у кошику -->
+    <!-- RecyclerView для відображення товарів з кошика -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCart"
         android:layout_width="match_parent"
