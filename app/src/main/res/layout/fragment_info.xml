@@ -1,163 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f5"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:background="#f0f0f5">
 
-    <LinearLayout
+    <!-- Шапка, яка прикріплена до верху та займає всю ширину -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:orientation="vertical"
-        android:gravity="top|center_horizontal">
+        android:layout_height="56dp"
+        android:layout_margin="0dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="#FFFFFF">
 
-        <!-- Логотип магазину -->
-        <ImageView
-            android:id="@+id/logoImage"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo"
-            android:contentDescription="Логотип магазину"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="20dp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-        <!-- Текст з інформацією про магазин -->
-        <TextView
-            android:elevation="8dp"
-            android:id="@+id/infoText"
-            android:background="#F5F5F5"
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ми раді представити вам наш магазин, де ви знайдете найкращі товари. Ми працюємо для вас, щоб забезпечити максимальний комфорт покупок. Завітайте до нас!"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:lineSpacingExtra="4dp"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:justificationMode="inter_word" />
+            <!-- Заголовок "Про магазин" -->
+            <TextView
+                android:id="@+id/tvInfoTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Про магазин"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:gravity="start" />
 
-        <!-- Контакти -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Контакти"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="#D32F2F"
-            android:padding="8dp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:elevation="8dp"
-            android:layout_marginBottom="8dp"/>
+            <!-- Іконка сердечка для переходу до вішліста -->
+            <ImageView
+                android:id="@+id/ivWishlist"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_heart_outline"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Основний вміст, який прокручується -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="8dp"
             android:orientation="vertical"
-            android:background="#F5F5F5"
-            android:elevation="8dp"
-            android:padding="12dp">
+            android:gravity="top|center_horizontal">
 
-            <!-- Телефони -->
+            <!-- Логотип магазину -->
+            <ImageView
+                android:id="@+id/logoImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"
+                android:contentDescription="Логотип магазину"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Текст з інформацією про магазин -->
+            <TextView
+                android:id="@+id/infoText"
+                android:elevation="8dp"
+                android:background="#F5F5F5"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ми раді представити вам наш магазин, де ви знайдете найкращі товари. Ми працюємо для вас, щоб забезпечити максимальний комфорт покупок. Завітайте до нас!"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:lineSpacingExtra="4dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:justificationMode="inter_word" />
+
+            <!-- Контакти -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="📱 +380 (68) 457-01-74\n📱 +380 (63) 209-93-94"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:lineSpacingExtra="2dp"
-                android:textAlignment="viewStart"
-                android:paddingStart="12dp"
+                android:text="Контакти"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#D32F2F"
+                android:padding="8dp"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:elevation="8dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Email і сайт -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F5F5F5"
+                android:elevation="8dp"
+                android:padding="12dp">
+
+                <!-- Телефони -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📱 +380 (68) 457-01-74\n📱 +380 (63) 209-93-94"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:lineSpacingExtra="2dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="12dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Email і сайт -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🌍 www.yaponskiy-kvartal.com\n✉️ yaponskiy.kvartal@gmail.com"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:lineSpacingExtra="2dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="12dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Адреса -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📍 вул. Шкільна, 35, Одеська область, 65111, Одеса, Україна"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:lineSpacingExtra="2dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="12dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Інформація про компанію -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🏪 Японський квартал - інтернет-магазин товарів для суші"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:lineSpacingExtra="2dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="12dp"/>
+            </LinearLayout>
+
+            <!-- Графік роботи -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🌍 www.yaponskiy-kvartal.com\n✉️ yaponskiy.kvartal@gmail.com"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:lineSpacingExtra="2dp"
-                android:textAlignment="viewStart"
-                android:paddingStart="12dp"
+                android:text="Графік роботи"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#D32F2F"
+                android:elevation="8dp"
+                android:padding="8dp"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Адреса -->
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="📍 вул. Шкільна, 35, Одеська область, 65111, Одеса, Україна"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:lineSpacingExtra="2dp"
-                android:textAlignment="viewStart"
-                android:paddingStart="12dp"
-                android:layout_marginBottom="8dp"/>
+                android:background="#F5F5F5"
+                android:elevation="8dp"
+                android:padding="12dp"
+                android:orientation="vertical">
 
-            <!-- Інформація про компанію -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Понеділок   10:00 - 18:00\nВівторок      10:00 - 18:00\nСереда         10:00 - 18:00\nЧетвер         10:00 - 18:00\nПʼятниця      10:00 - 18:00\nСубота          Вихідний\nНеділя          Вихідний"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:lineSpacingExtra="2dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="12dp"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
+                android:background="#F5F5F5"
+                android:padding="8dp"
                 android:layout_height="wrap_content"
-                android:text="🏪 Японський квартал - інтернет-магазин товарів для суші"
-                android:textSize="16sp"
+                android:text="Детальніше: https://yaponskiy-kvartal.com/ua/"
+                android:textSize="14sp"
                 android:textColor="#000000"
-                android:lineSpacingExtra="2dp"
-                android:textAlignment="viewStart"
-                android:paddingStart="12dp"/>
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:elevation="8dp"
+                android:autoLink="web"/>
         </LinearLayout>
-
-        <!-- Графік роботи -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Графік роботи"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="#D32F2F"
-            android:elevation="8dp"
-            android:padding="8dp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F5F5F5"
-            android:elevation="8dp"
-            android:padding="12dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Понеділок   10:00 - 18:00\nВівторок      10:00 - 18:00\nСереда         10:00 - 18:00\nЧетвер         10:00 - 18:00\nПʼятниця      10:00 - 18:00\nСубота          Вихідний\nНеділя          Вихідний"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:lineSpacingExtra="2dp"
-                android:textAlignment="viewStart"
-                android:paddingStart="12dp"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:background="#F5F5F5"
-            android:padding="8dp"
-            android:layout_height="wrap_content"
-            android:text="Детальніше: https://yaponskiy-kvartal.com/ua/"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:elevation="8dp"
-            android:autoLink="web"/>
+    </ScrollView>
 </LinearLayout>
-</ScrollView>
-
