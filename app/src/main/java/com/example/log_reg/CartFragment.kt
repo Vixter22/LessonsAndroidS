@@ -50,7 +50,6 @@ class CartFragment : Fragment() {
         tvEmptyCart = view.findViewById(R.id.tvEmptyCart)
         tvTotalCost = view.findViewById(R.id.tvTotalCost)
         btnPay = view.findViewById(R.id.btnPay)
-        // Додаємо backgroundTintList = null, як для кнопки "Купити"
         btnPay.backgroundTintList = null
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewCart)
@@ -64,6 +63,7 @@ class CartFragment : Fragment() {
                 updateCartItemQuantity(cartDisplayItem, cartDisplayItem.cartItem.quantity + 1)
             },
             onDecreaseClick = { cartDisplayItem ->
+                // Логіка зменшення: якщо кількість більше 1, зменшуємо, інакше – видаляємо товар
                 if (cartDisplayItem.cartItem.quantity > 1) {
                     updateCartItemQuantity(cartDisplayItem, cartDisplayItem.cartItem.quantity - 1)
                 } else {
@@ -73,12 +73,10 @@ class CartFragment : Fragment() {
         )
         recyclerView.adapter = cartAdapter
 
-        // Обробка кліку по кнопці "Оплатити" – поки що функція порожня
         btnPay.setOnClickListener {
-            // Тут поки що не виконується жодна логіка оплати
+            // Логіка оплати поки що не реалізована
         }
 
-        // Завантаження даних з бази даних
         loadCartItems()
     }
 

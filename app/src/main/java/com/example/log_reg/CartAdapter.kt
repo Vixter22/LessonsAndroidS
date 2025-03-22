@@ -51,6 +51,15 @@ class CartAdapter(
             holder.imageViewProduct.setImageResource(R.drawable.ic_launcher_background)
         }
 
+        // Логіка для кнопки зменшення: якщо кількість = 1, робимо її неактивною
+        if (item.cartItem.quantity <= 1) {
+            holder.imageViewMinus.alpha = 0.5f
+            holder.imageViewMinus.isEnabled = false
+        } else {
+            holder.imageViewMinus.alpha = 1.0f
+            holder.imageViewMinus.isEnabled = true
+        }
+
         // Обробка кліку для збільшення кількості
         holder.imageViewPlus.setOnClickListener {
             onIncreaseClick(item)
@@ -58,7 +67,10 @@ class CartAdapter(
 
         // Обробка кліку для зменшення кількості
         holder.imageViewMinus.setOnClickListener {
-            onDecreaseClick(item)
+            // Якщо кнопка активна, викликаємо onDecreaseClick
+            if (holder.imageViewMinus.isEnabled) {
+                onDecreaseClick(item)
+            }
         }
 
         // Обробка кліку для видалення товару
