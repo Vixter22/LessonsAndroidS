@@ -1,127 +1,306 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#f0f0f5"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f0f0f5">
 
-    <!-- Кнопка виходу в правому верхньому куті -->
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вийти"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp" />
-
-    <!-- Кнопка "Видалити акаунт" у верхній частині екрана -->
-    <Button
-        android:id="@+id/btn_delete_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Видалити акаунт"
-        android:layout_alignParentStart="true"
-        android:layout_margin="16dp"
-        android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"/>
-
-    <!-- ScrollView для прокрутки -->
-    <ScrollView
-        android:id="@+id/scrollView"
+    <!-- Фіксований заголовок -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/btn_delete_account"
-        android:fillViewport="true"
-        android:layout_above="@id/btn_save_profile">
+        android:layout_height="56dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="#FFFFFF">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="150dp">
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical">
 
-            <!-- Аватарка -->
+            <!-- Заголовок "Профіль" -->
+            <TextView
+                android:id="@+id/tvProfileTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Профіль"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"/>
+
+            <!-- Іконка виходу (32dp x 32dp) -->
             <ImageView
-                android:id="@+id/img_avatar"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/ic_avatar_placeholder"
-                android:background="@android:color/darker_gray"
-                android:scaleType="centerCrop"
-                android:clipToOutline="true" />
+                android:id="@+id/iv_exit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_exit"
+                android:contentDescription="Вийти"
+                android:padding="4dp"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-            <!-- Кнопка редагування аватару -->
-            <Button
-                android:id="@+id/btn_edit_avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Змінити фото"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
-
-            <!-- Поля особистої інформації -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ім'я" />
-
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ім'я" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email" />
-
-            <EditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Дата народження" />
-
-            <EditText
-                android:id="@+id/editTextBirthDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Дата народження (дд-мм-рррр)"
-                android:inputType="date" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Про себе" />
-
-            <EditText
-                android:id="@+id/editTextAbout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Про себе"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:maxLines="6"
-                android:gravity="top"/>
-
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Кнопка "Зберегти профіль" внизу -->
-    <Button
-        android:id="@+id/btn_save_profile"
+    <!-- Контейнер для контенту профілю -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Зберегти профіль"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="2dp" />
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <!-- ScrollView для прокручуваного вмісту -->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_save_profile"
+            android:layout_marginTop="8dp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="3dp"
+                android:layout_marginBottom="150dp">
+
+                <!-- Контейнер для фото профілю з кнопкою "Змінити фото" -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <!-- Ліва частина: Аватарка -->
+                        <ImageView
+                            android:id="@+id/img_avatar"
+                            android:layout_width="125dp"
+                            android:layout_height="125dp"
+                            android:src="@drawable/ic_avatar_placeholder"
+                            android:scaleType="centerCrop"
+                            android:clipToOutline="true"
+                            android:background="@drawable/circle"/>
+
+                        <!-- Права частина: Текст та кнопка -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="30dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Текст "фото профілю" -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Фото профілю"
+                                android:layout_marginStart="10dp"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+
+                            <!-- Кнопка "Змінити фото" -->
+                            <Button
+                                android:id="@+id/btn_edit_avatar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:text="Змінити фото"
+                                android:layout_marginTop="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Контейнер "Персональні дані" -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <!-- Заголовок контейнера -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Персональні дані"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:padding="4dp"/>
+
+                        <!-- Горизонтальна лінія -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"/>
+
+                        <!-- Поле для Імені -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ім'я"
+                            android:paddingTop="8dp"/>
+                        <EditText
+                            android:id="@+id/editTextName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ім'я"
+                            android:background="@drawable/edit_text_no_shadow"
+                            android:padding="8dp"/>
+
+                        <!-- Поле для Дати народження -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Дата народження"
+                            android:paddingTop="8dp"/>
+                        <EditText
+                            android:id="@+id/editTextBirthDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Дата народження (дд-мм-рррр)"
+                            android:inputType="date"
+                            android:background="@drawable/edit_text_no_shadow"
+                            android:padding="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Контейнер "Контактні дані" -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <!-- Заголовок контейнера -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Контактні дані"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:padding="4dp"/>
+
+                        <!-- Горизонтальна лінія -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#CCCCCC"/>
+
+                        <!-- Поле для Email -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email"
+                            android:paddingTop="8dp"/>
+                        <EditText
+                            android:id="@+id/editTextEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:background="@drawable/edit_text_no_shadow"
+                            android:padding="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Контейнер "Про себе" -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <!-- Заголовок контейнера -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Про себе"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:padding="4dp"/>
+
+                        <!-- Поле для Про себе -->
+                        <EditText
+                            android:id="@+id/editTextAbout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Про себе"
+                            android:inputType="textMultiLine"
+                            android:minLines="3"
+                            android:maxLines="6"
+                            android:gravity="top"
+                            android:background="@drawable/edit_text_no_shadow"
+                            android:padding="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Кнопка "Видалити акаунт" -->
+                <Button
+                    android:id="@+id/btn_delete_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Видалити акаунт"
+                    android:layout_margin="2dp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Кнопка "Зберегти профіль" зафіксована внизу -->
+        <Button
+            android:id="@+id/btn_save_profile"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Зберегти профіль"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_red"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</LinearLayout>

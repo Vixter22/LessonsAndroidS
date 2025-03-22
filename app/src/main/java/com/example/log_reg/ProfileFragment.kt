@@ -22,7 +22,7 @@ import java.io.FileOutputStream
 class ProfileFragment : Fragment() {
 
     private lateinit var deleteAccountButton: Button
-    private lateinit var logoutButton: Button
+    private lateinit var exitImageView: ImageView // Іконка виходу
     private lateinit var avatarImageView: ImageView
     private lateinit var editAvatarButton: Button
     private lateinit var saveProfileButton: Button
@@ -59,7 +59,7 @@ class ProfileFragment : Fragment() {
         database = AppDatabase.getInstance(requireContext())
 
         deleteAccountButton = view.findViewById(R.id.btn_delete_account)
-        logoutButton = view.findViewById(R.id.btn_logout)
+        exitImageView = view.findViewById(R.id.iv_exit) // ініціалізація іконки виходу
         avatarImageView = view.findViewById(R.id.img_avatar)
         editAvatarButton = view.findViewById(R.id.btn_edit_avatar)
         saveProfileButton = view.findViewById(R.id.btn_save_profile)
@@ -80,8 +80,9 @@ class ProfileFragment : Fragment() {
         // Завантаження даних користувача
         loadUserProfile()
 
-        logoutButton.setOnClickListener {
-            (activity as? MainActivity)?.logoutUser()
+        // Обробка кліку на іконку виходу з підтвердженням
+        exitImageView.setOnClickListener {
+            showLogoutConfirmationDialog()
         }
 
         editAvatarButton.setOnClickListener {
@@ -92,9 +93,9 @@ class ProfileFragment : Fragment() {
             saveUserProfile()
         }
 
-        deleteAccountButton.setOnClickListener {
+         deleteAccountButton.setOnClickListener {
             confirmDeleteAccount()
-        }
+         }
     }
 
     private fun loadUserProfile() {
@@ -157,26 +158,37 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun confirmDeleteAccount() {
+     private fun confirmDeleteAccount() {
+         AlertDialog.Builder(requireContext())
+             .setTitle("Видалити акаунт?")
+             .setMessage("Цю дію не можна скасувати. Ви впевнені?")
+             .setPositiveButton("Так") { _, _ -> deleteAccount() }
+             .setNegativeButton("Скасувати", null)
+             .show()
+     }
+
+     private fun deleteAccount() {
+         lifecycleScope.launch(Dispatchers.IO) {
+             val rowsDeleted = database.userDao().deleteUser(currentUsername!!)
+             withContext(Dispatchers.Main) {
+                 if (rowsDeleted > 0) {
+                     Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
+                     (activity as? MainActivity)?.logoutUser()
+                 } else {
+                     Toast.makeText(requireContext(), "Помилка видалення акаунта!", Toast.LENGTH_SHORT).show()
+                 }
+             }
+         }
+     }
+
+    private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Видалити акаунт?")
-            .setMessage("Цю дію не можна скасувати. Ви впевнені?")
-            .setPositiveButton("Так") { _, _ -> deleteAccount() }
+            .setTitle("Вихід")
+            .setMessage("Ви впевнені, що хочете вийти з акаунту?")
+            .setPositiveButton("Так") { _, _ ->
+                (activity as? MainActivity)?.logoutUser()
+            }
             .setNegativeButton("Скасувати", null)
             .show()
-    }
-
-    private fun deleteAccount() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val rowsDeleted = database.userDao().deleteUser(currentUsername!!)
-            withContext(Dispatchers.Main) {
-                if (rowsDeleted > 0) {
-                    Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
-                    (activity as? MainActivity)?.logoutUser()
-                } else {
-                    Toast.makeText(requireContext(), "Помилка видалення акаунта!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 }
