@@ -7,7 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +27,7 @@ import java.io.FileOutputStream
 class ProfileFragment : Fragment() {
 
     private lateinit var deleteAccountButton: Button
-    private lateinit var exitImageView: ImageView // Іконка виходу
+    private lateinit var exitImageView: ImageView
     private lateinit var avatarImageView: ImageView
     private lateinit var editAvatarButton: Button
     private lateinit var saveProfileButton: Button
@@ -30,11 +35,11 @@ class ProfileFragment : Fragment() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextBirthDate: EditText
     private lateinit var editTextAbout: EditText
+    private lateinit var orderManagementLayout: RelativeLayout
 
     private lateinit var database: AppDatabase
     private var tempAvatarUri: Uri? = null
     private var currentUsername: String? = null
-
     private var currentUser: User? = null
 
     private val pickImageLauncher =
@@ -58,8 +63,9 @@ class ProfileFragment : Fragment() {
         // Ініціалізація бази даних
         database = AppDatabase.getInstance(requireContext())
 
+        // Знаходження елементів інтерфейсу
         deleteAccountButton = view.findViewById(R.id.btn_delete_account)
-        exitImageView = view.findViewById(R.id.iv_exit) // ініціалізація іконки виходу
+        exitImageView = view.findViewById(R.id.iv_exit)
         avatarImageView = view.findViewById(R.id.img_avatar)
         editAvatarButton = view.findViewById(R.id.btn_edit_avatar)
         saveProfileButton = view.findViewById(R.id.btn_save_profile)
@@ -67,8 +73,9 @@ class ProfileFragment : Fragment() {
         editTextEmail = view.findViewById(R.id.editTextEmail)
         editTextBirthDate = view.findViewById(R.id.editTextBirthDate)
         editTextAbout = view.findViewById(R.id.editTextAbout)
+        orderManagementLayout = view.findViewById(R.id.rl_order_management)
 
-        // Отримуємо username із SharedPreferences
+        // Отримання username із SharedPreferences
         val sessionPref = requireActivity().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
         currentUsername = sessionPref.getString("current_user", null)
 
@@ -85,17 +92,30 @@ class ProfileFragment : Fragment() {
             showLogoutConfirmationDialog()
         }
 
+        // Обробка кліку для вибору фото аватара
         editAvatarButton.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
 
+        // Збереження профілю
         saveProfileButton.setOnClickListener {
             saveUserProfile()
         }
 
-         deleteAccountButton.setOnClickListener {
+        // Обробка кліку на контейнер "Мої замовлення"
+        orderManagementLayout.setOnClickListener {
+            // Перехід до OrderHistoryFragment
+            val orderHistoryFragment = OrderHistoryFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, orderHistoryFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // Обробка кліку на кнопку видалення акаунту
+        deleteAccountButton.setOnClickListener {
             confirmDeleteAccount()
-         }
+        }
     }
 
     private fun loadUserProfile() {
@@ -123,10 +143,10 @@ class ProfileFragment : Fragment() {
         val birthDate = editTextBirthDate.text.toString().trim()
         val about = editTextAbout.text.toString().trim()
 
-        // Зберігаємо нову аватарку, якщо обрано
+        // Збереження нової аватарки, якщо вона обрана
         val photoPath = tempAvatarUri?.let { saveImageToInternalStorage(it) }
 
-        // Оновлюємо дані користувача
+        // Оновлення даних користувача
         val userToUpdate = currentUser?.copy(
             name = name,
             email = email,
@@ -158,28 +178,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
-     private fun confirmDeleteAccount() {
-         AlertDialog.Builder(requireContext())
-             .setTitle("Видалити акаунт?")
-             .setMessage("Цю дію не можна скасувати. Ви впевнені?")
-             .setPositiveButton("Так") { _, _ -> deleteAccount() }
-             .setNegativeButton("Скасувати", null)
-             .show()
-     }
+    private fun confirmDeleteAccount() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Видалити акаунт?")
+            .setMessage("Цю дію не можна скасувати. Ви впевнені?")
+            .setPositiveButton("Так") { _, _ -> deleteAccount() }
+            .setNegativeButton("Скасувати", null)
+            .show()
+    }
 
-     private fun deleteAccount() {
-         lifecycleScope.launch(Dispatchers.IO) {
-             val rowsDeleted = database.userDao().deleteUser(currentUsername!!)
-             withContext(Dispatchers.Main) {
-                 if (rowsDeleted > 0) {
-                     Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
-                     (activity as? MainActivity)?.logoutUser()
-                 } else {
-                     Toast.makeText(requireContext(), "Помилка видалення акаунта!", Toast.LENGTH_SHORT).show()
-                 }
-             }
-         }
-     }
+    private fun deleteAccount() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val rowsDeleted = database.userDao().deleteUser(currentUsername!!)
+            withContext(Dispatchers.Main) {
+                if (rowsDeleted > 0) {
+                    Toast.makeText(requireContext(), "Акаунт видалено", Toast.LENGTH_SHORT).show()
+                    (activity as? MainActivity)?.logoutUser()
+                } else {
+                    Toast.makeText(requireContext(), "Помилка видалення акаунта!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
