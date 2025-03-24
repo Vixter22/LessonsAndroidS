@@ -75,6 +75,8 @@ class ProfileFragment : Fragment() {
         editTextAbout = view.findViewById(R.id.editTextAbout)
         orderManagementLayout = view.findViewById(R.id.rl_order_management)
         saveProfileButton.backgroundTintList = null
+        editAvatarButton.backgroundTintList = null
+        deleteAccountButton.backgroundTintList = null
 
         // Отримання username із SharedPreferences
         val sessionPref = requireActivity().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
