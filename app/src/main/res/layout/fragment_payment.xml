@@ -66,9 +66,7 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="#FFFFFF"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:layout_margin="4dp"
                 android:layout_marginBottom="8dp">
 
                 <LinearLayout
@@ -110,8 +108,7 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="#FFFFFF"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:layout_margin="4dp"
                 android:layout_marginBottom="8dp">
 
                 <LinearLayout
@@ -174,7 +171,283 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Контейнер "Доставка" -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_margin="4dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Заголовок контейнера "Доставка" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Доставка"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <!-- Горизонтальна лінія -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#CCCCCC"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Рядок з логотипом та текстом "Нова Пошта" -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="8dp">
+
+                        <!-- Логотип Нової Пошти -->
+                        <ImageView
+                            android:id="@+id/ivNovaPoshtaLogo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_nova_poshta_logo"
+                            android:contentDescription="Логотип Нової Пошти"
+                            android:layout_marginEnd="8dp"/>
+
+                        <!-- Текст "Нова Пошта" -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Нова Пошта"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- Підпис "Місто" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Місто"
+                        android:textSize="14sp"
+                        android:paddingTop="4dp" />
+
+                    <!-- Поле для введення міста -->
+                    <EditText
+                        android:id="@+id/etCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Місто"
+                        android:background="@drawable/edit_text_no_shadow"
+                        android:padding="8dp"
+                        android:textSize="14sp" />
+
+                    <!-- Підпис "Відділення" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Відділення"
+                        android:textSize="14sp"
+                        android:paddingTop="8dp" />
+
+                    <!-- Поле для введення відділення -->
+                    <EditText
+                        android:id="@+id/etDepartment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Відділення"
+                        android:background="@drawable/edit_text_no_shadow"
+                        android:padding="8dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Контейнер "Оплата" -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_margin="4dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Заголовок контейнера "Оплата" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Оплата"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <!-- Горизонтальна лінія -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#CCCCCC"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Текст "Як бажаєте оплатити:" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Як бажаєте оплатити:"
+                        android:textSize="14sp"
+                        android:paddingBottom="8dp" />
+
+                    <!-- RadioGroup з варіантами оплати -->
+                    <RadioGroup
+                        android:id="@+id/rgPaymentMethod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbCardPayment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Оплата картою" />
+
+                        <RadioButton
+                            android:id="@+id/rbCashOnDelivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Оплата при отриманні"
+                            android:layout_marginStart="16dp"/>
+                    </RadioGroup>
+
+                    <!-- Контейнер для полів оплати картою -->
+                    <LinearLayout
+                        android:id="@+id/llCardPaymentFields"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone">
+
+                        <!-- Підпис "Номер карти" -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Номер карти"
+                            android:textSize="14sp"
+                            android:paddingTop="4dp" />
+
+                        <!-- Поле для введення номера карти -->
+                        <EditText
+                            android:id="@+id/etCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Номер карти"
+                            android:background="@drawable/edit_text_no_shadow"
+                            android:padding="8dp"
+                            android:textSize="14sp" />
+
+                        <!-- Контейнер для Термін дії та CVV -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp">
+
+                            <!-- Контейнер для Термін дії -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <!-- Підпис "Термін дії" -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Термін дії"
+                                    android:textSize="14sp"
+                                    android:paddingTop="4dp" />
+
+                                <!-- Поле для введення терміну дії -->
+                                <EditText
+                                    android:id="@+id/etExpiry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="MM/YY"
+                                    android:background="@drawable/edit_text_no_shadow"
+                                    android:padding="8dp"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Контейнер для CVV -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="8dp">
+
+                                <!-- Підпис "CVV" -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="CVV"
+                                    android:textSize="14sp"
+                                    android:paddingTop="4dp" />
+
+                                <!-- Поле для введення CVV -->
+                                <EditText
+                                    android:id="@+id/etCVV"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="CVV"
+                                    android:background="@drawable/edit_text_no_shadow"
+                                    android:padding="8dp"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Нижній контейнер із загальною вартістю та кнопкою -->
+            <LinearLayout
+                android:id="@+id/bottomContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/tvTotalCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Вартість замовлення: 0 грн"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/btnPay"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="Завершити оформлення"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_red"
+                    android:backgroundTint="@null"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </RelativeLayout>
