@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f5"
-    android:orientation="vertical">
+    android:background="#f0f0f5">
 
-    <!-- Шапка з стрілкою "назад" зліва та заголовком "Оформлення замовлення" -->
+    <!-- Фіксована шапка, яка не скролиться -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/headerCard"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:cardElevation="4dp"
         app:cardCornerRadius="0dp"
         app:cardBackgroundColor="#FFFFFF"
-        android:layout_margin="0dp">
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,12 +27,12 @@
             <!-- Стрілка "назад" -->
             <ImageView
                 android:id="@+id/ivBack"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:src="@drawable/ic_back"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"/>
 
-            <!-- Заголовок "Оформлення замовлення" -->
+            <!-- Заголовок -->
             <TextView
                 android:id="@+id/tvPaymentTitle"
                 android:layout_width="0dp"
@@ -46,6 +46,135 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Тут можна розмістити додатковий контент для оплати -->
+    <!-- Основний контент, який скролиться -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerCard"
+        android:fillViewport="true">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Контейнер "Ваше замовлення" -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Заголовок контейнера "Ваше замовлення" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ваше замовлення"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <!-- Горизонтальна лінія -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#CCCCCC"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- RecyclerView для даних замовлення -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Контейнер "Контактні дані отримувача" -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Заголовок контейнера "Контактні дані отримувача" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Контактні дані отримувача"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                    <!-- Горизонтальна лінія -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#CCCCCC"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Підпис "Ім'я" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ім'я"
+                        android:textSize="14sp"
+                        android:paddingTop="4dp" />
+
+                    <!-- Поле для введення імені -->
+                    <EditText
+                        android:id="@+id/etRecipientName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ім'я"
+                        android:background="@drawable/edit_text_no_shadow"
+                        android:padding="8dp"
+                        android:textSize="14sp" />
+
+                    <!-- Підпис "Пошта" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Пошта"
+                        android:textSize="14sp"
+                        android:paddingTop="8dp" />
+
+                    <!-- Поле для введення пошти -->
+                    <EditText
+                        android:id="@+id/etRecipientEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Пошта"
+                        android:background="@drawable/edit_text_no_shadow"
+                        android:padding="8dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
