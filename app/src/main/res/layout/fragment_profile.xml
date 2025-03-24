@@ -57,7 +57,7 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/btn_save_profile"
+            android:layout_above="@id/container_save_profile"
             android:layout_marginTop="8dp"
             android:fillViewport="true">
 
@@ -367,16 +367,23 @@
             </LinearLayout>
         </ScrollView>
 
-        <!-- Кнопка "Зберегти профіль" зафіксована внизу -->
-        <Button
-            android:id="@+id/btn_save_profile"
+        <!-- Контейнер для кнопки "Зберегти профіль" з білим фоном -->
+        <LinearLayout
+            android:id="@+id/container_save_profile"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Зберегти профіль"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_red"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_save_profile"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Зберегти профіль"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_red" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
