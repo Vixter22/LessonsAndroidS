@@ -88,7 +88,7 @@
             android:id="@+id/btnPay"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Оплатити"
+            android:text="Оформити замовлення"
             android:textColor="@android:color/white"
             android:background="@drawable/button_red"
             android:backgroundTint="@null"

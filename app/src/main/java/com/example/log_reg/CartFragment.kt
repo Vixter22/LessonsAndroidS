@@ -74,7 +74,10 @@ class CartFragment : Fragment() {
         recyclerView.adapter = cartAdapter
 
         btnPay.setOnClickListener {
-            // Логіка оплати поки що не реалізована
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, PaymentFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         loadCartItems()
