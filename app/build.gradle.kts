@@ -52,6 +52,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
     // ✅ Додаємо Room
     implementation("androidx.room:room-runtime:2.5.2")
     kapt("androidx.room:room-compiler:2.5.2")

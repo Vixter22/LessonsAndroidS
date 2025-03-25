@@ -30,7 +30,6 @@ class PaymentFragment : Fragment() {
     private lateinit var btnPay: Button
     private lateinit var nestedScrollView: NestedScrollView
 
-    // Збережемо завантажені дані замовлення для розрахунку вартості
     private var orderItems: List<CartDisplayItem> = emptyList()
 
     override fun onCreateView(
@@ -43,14 +42,12 @@ class PaymentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Обробка кліку на стрілку "назад"
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
         ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
         nestedScrollView = view.findViewById(R.id.nestedScrollView)
-
         recyclerViewOrder = view.findViewById(R.id.recyclerViewOrder)
         recyclerViewOrder.layoutManager = LinearLayoutManager(context)
         recyclerViewOrder.addItemDecoration(
@@ -79,25 +76,6 @@ class PaymentFragment : Fragment() {
         val redColor = Color.RED
         val defaultColor = Color.GRAY
 
-        // Початкова установка способу оплати
-        when (radioGroup.checkedRadioButtonId) {
-            R.id.rbCardPayment -> {
-                cardPaymentFields.visibility = View.VISIBLE
-                rbCardPayment.buttonTintList = android.content.res.ColorStateList.valueOf(redColor)
-                rbCashOnDelivery.buttonTintList = android.content.res.ColorStateList.valueOf(defaultColor)
-            }
-            R.id.rbCashOnDelivery -> {
-                cardPaymentFields.visibility = View.GONE
-                rbCashOnDelivery.buttonTintList = android.content.res.ColorStateList.valueOf(redColor)
-                rbCardPayment.buttonTintList = android.content.res.ColorStateList.valueOf(defaultColor)
-            }
-            else -> {
-                cardPaymentFields.visibility = View.GONE
-                rbCardPayment.buttonTintList = android.content.res.ColorStateList.valueOf(defaultColor)
-                rbCashOnDelivery.buttonTintList = android.content.res.ColorStateList.valueOf(defaultColor)
-            }
-        }
-
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rbCardPayment -> {
@@ -116,76 +94,11 @@ class PaymentFragment : Fragment() {
             }
         }
 
-        // Завантаження даних замовлення та контактних даних користувача
         loadOrderItems()
         loadUserContactDetails()
 
-        // Обробка кліку кнопки "Завершити оформлення"
         btnPay.setOnClickListener {
-            Thread {
-                try {
-                    // Збір даних з форм
-                    val recipientName = etRecipientName.text.toString().trim()
-                    val recipientEmail = etRecipientEmail.text.toString().trim()
-                    val city = etCity.text.toString().trim()
-                    val department = etDepartment.text.toString().trim()
-                    val deliveryInfo = "$city, $department"
-                    val paymentMethod = if (radioGroup.checkedRadioButtonId == R.id.rbCashOnDelivery)
-                        "при отриманні"
-                    else
-                        "карта"
-                    // Обчислення загальної вартості замовлення
-                    val totalCost = orderItems.sumByDouble { it.product.price * it.cartItem.quantity }
-
-                    // Формування дати оформлення замовлення
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    val orderDate = dateFormat.format(Date())
-
-                    // Створення об'єкта Order
-                    val newOrder = Order(
-                        userId = userId,
-                        orderDate = orderDate,
-                        status = "pending",
-                        recipientName = recipientName,
-                        recipientEmail = recipientEmail,
-                        deliveryInfo = deliveryInfo,
-                        paymentMethod = paymentMethod,
-                        totalCost = totalCost
-                    )
-
-                    val db = AppDatabase.getInstance(requireContext())
-                    // Вставка замовлення та отримання згенерованого id
-                    val orderId = db.orderDao().insertOrder(newOrder)
-
-                    // Формування списку OrderItem на основі CartDisplayItem
-                    val orderItemsList = orderItems.map { cartDisplayItem ->
-                        OrderItem(
-                            orderId = orderId.toInt(),
-                            productId = cartDisplayItem.product.id!!,
-                            quantity = cartDisplayItem.cartItem.quantity,
-                            price = cartDisplayItem.product.price
-                        )
-                    }
-                    // Запис OrderItem'ів
-                    db.orderItemDao().insertOrderItems(orderItemsList)
-
-                    // Очищення кошика – видаляємо кожну позицію
-                    orderItems.forEach { cartDisplayItem ->
-                        db.cartItemDao().delete(cartDisplayItem.cartItem)
-                    }
-
-                    // Повернення в UI-потік для повідомлення та переходу
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Ваше замовлення сформовано! Дякую за покупу!", Toast.LENGTH_LONG).show()
-                        requireActivity().supportFragmentManager.popBackStack()
-                    }
-                } catch (ex: Exception) {
-                    Log.e("PaymentFragment", "Помилка оформлення замовлення: ${ex.message}")
-                    requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Сталася помилка. Спробуйте пізніше.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }.start()
+            processOrder()
         }
     }
 
@@ -196,9 +109,7 @@ class PaymentFragment : Fragment() {
                 val cartItems = db.cartItemDao().getCartItemsForUser(userId)
                 val loadedItems = cartItems.mapNotNull { cartItem ->
                     val product = db.productDao().getProductByIdSync(cartItem.productId)
-                    if (product != null) {
-                        CartDisplayItem(cartItem, product)
-                    } else null
+                    product?.let { CartDisplayItem(cartItem, it) }
                 }
                 orderItems = loadedItems
                 requireActivity().runOnUiThread {
@@ -212,7 +123,7 @@ class PaymentFragment : Fragment() {
     }
 
     private fun updateTotalCost(items: List<CartDisplayItem>) {
-        val totalCost = items.sumByDouble { it.product.price * it.cartItem.quantity }
+        val totalCost = items.sumOf { it.product.price * it.cartItem.quantity }
         tvTotalCost.text = "Вартість замовлення: $totalCost грн"
     }
 
@@ -223,11 +134,67 @@ class PaymentFragment : Fragment() {
             if (currentUsername != null) {
                 val db = AppDatabase.getInstance(requireContext())
                 val user = db.userDao().getUserSync(currentUsername)
-                if (user != null) {
+                user?.let {
                     requireActivity().runOnUiThread {
-                        etRecipientName.setText(user.name)
-                        etRecipientEmail.setText(user.email)
+                        etRecipientName.setText(it.name)
+                        etRecipientEmail.setText(it.email)
                     }
+                }
+            }
+        }.start()
+    }
+
+    private fun processOrder() {
+        Thread {
+            try {
+                val recipientName = etRecipientName.text.toString().trim()
+                val recipientEmail = etRecipientEmail.text.toString().trim()
+                val city = etCity.text.toString().trim()
+                val department = etDepartment.text.toString().trim()
+                val deliveryInfo = "$city, $department"
+                val paymentMethod = if (view?.findViewById<RadioGroup>(R.id.rgPaymentMethod)
+                        ?.checkedRadioButtonId == R.id.rbCashOnDelivery
+                ) "при отриманні" else "карта"
+
+                val totalCost = orderItems.sumOf { it.product.price * it.cartItem.quantity }
+                val orderDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+                val newOrder = Order(
+                    userId = userId,
+                    orderDate = orderDate,
+                    status = "pending",
+                    recipientName = recipientName,
+                    recipientEmail = recipientEmail,
+                    deliveryInfo = deliveryInfo,
+                    paymentMethod = paymentMethod,
+                    totalCost = totalCost
+                )
+
+                val db = AppDatabase.getInstance(requireContext())
+                val orderId = db.orderDao().insertOrder(newOrder)
+
+                val orderItemsList = orderItems.map {
+                    OrderItem(
+                        orderId = orderId.toInt(),
+                        productId = it.product.id!!,
+                        quantity = it.cartItem.quantity,
+                        price = it.product.price
+                    )
+                }
+                db.orderItemDao().insertOrderItems(orderItemsList)
+
+                orderItems.forEach {
+                    db.cartItemDao().delete(it.cartItem)
+                }
+
+                requireActivity().runOnUiThread {
+                    Toast.makeText(requireContext(), "Ваше замовлення сформовано! Дякую за покупку!", Toast.LENGTH_LONG).show()
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
+            } catch (ex: Exception) {
+                Log.e("PaymentFragment", "Помилка оформлення замовлення: ${ex.message}")
+                requireActivity().runOnUiThread {
+                    Toast.makeText(requireContext(), "Сталася помилка. Спробуйте пізніше.", Toast.LENGTH_LONG).show()
                 }
             }
         }.start()
