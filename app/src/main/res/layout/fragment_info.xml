@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@android:color/white"
                 android:layout_margin="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@android:color/white"
                 android:layout_margin="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="#F5F5F5"
+                        android:background="@android:color/white"
                         android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"
@@ -191,7 +191,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F5F5F5"
+                        android:background="@android:color/white"
                         android:padding="12dp"
                         android:orientation="vertical">
                         <TextView
@@ -233,7 +233,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F5F5F5"
+                        android:background="@android:color/white"
                         android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"

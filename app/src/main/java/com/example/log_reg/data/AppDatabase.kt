@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [User::class, Product::class, CartItem::class, Order::class, OrderItem::class, WishlistItem::class],
-    version = 16,
+    version = 17,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -15,7 +15,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun productDao(): ProductDao
     abstract fun wishlistItemDao(): WishlistItemDao
-    abstract fun cartItemDao(): CartItemDao  // Додано для роботи з корзиною
+    abstract fun cartItemDao(): CartItemDao
+    abstract fun orderDao(): OrderDao
+    abstract fun orderItemDao(): OrderItemDao
 
     companion object {
         @Volatile

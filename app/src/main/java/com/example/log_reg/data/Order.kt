@@ -17,5 +17,10 @@ data class Order(
     val id: Int = 0,
     val userId: Int,
     val orderDate: String,
-    val status: String // "pending", "confirmed", "canceled" тощо
+    val status: String, // наприклад, "pending", "confirmed", "canceled" тощо
+    val recipientName: String,
+    val recipientEmail: String,
+    val deliveryInfo: String, // формат "Місто, відділення"
+    val paymentMethod: String, // "при отриманні" або "карта"
+    val totalCost: Double
 )
