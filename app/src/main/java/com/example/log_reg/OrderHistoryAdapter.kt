@@ -44,7 +44,7 @@ class OrderHistoryAdapter(private val orders: List<OrderHistoryDisplayItem>) :
             rvOrderItems.adapter = OrderItemHistoryAdapter(item.orderItems)
 
             // Відображаємо суму замовлення
-            tvOrderTotal.text = "До оплати без доставки: ${item.order.totalCost} грн"
+            tvOrderTotal.text = "Загальна сумма замовлення: ${item.order.totalCost} грн"
         }
     }
 }
