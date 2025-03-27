@@ -3,6 +3,9 @@ package com.example.log_reg
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +32,11 @@ class PaymentFragment : Fragment() {
     private lateinit var tvTotalCost: TextView
     private lateinit var btnPay: Button
     private lateinit var nestedScrollView: NestedScrollView
+
+    // Поля для оплати картою
+    private lateinit var etCardNumber: EditText
+    private lateinit var etExpiry: EditText
+    private lateinit var etCVV: EditText
 
     private var orderItems: List<CartDisplayItem> = emptyList()
 
@@ -63,6 +71,65 @@ class PaymentFragment : Fragment() {
         etRecipientEmail = view.findViewById(R.id.etRecipientEmail)
         etCity = view.findViewById(R.id.etCity)
         etDepartment = view.findViewById(R.id.etDepartment)
+
+        // Ініціалізація полів оплати картою
+        etCardNumber = view.findViewById(R.id.etCardNumber)
+        etExpiry = view.findViewById(R.id.etExpiry)
+        etCVV = view.findViewById(R.id.etCVV)
+
+        // TextWatcher для форматування номера картки (вставка пробілів після кожних 4 цифр)
+        etCardNumber.addTextChangedListener(object : TextWatcher {
+            var isFormatting = false
+            var previousText = ""
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                previousText = s?.toString() ?: ""
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (isFormatting) return
+
+                isFormatting = true
+                val digitsOnly = s.toString().replace(" ", "")
+                val limited = if (digitsOnly.length > 16) digitsOnly.substring(0, 16) else digitsOnly
+                val formatted = StringBuilder()
+                for (i in limited.indices) {
+                    formatted.append(limited[i])
+                    if ((i + 1) % 4 == 0 && i != limited.lastIndex) {
+                        formatted.append(" ")
+                    }
+                }
+                val cursorPosition = etCardNumber.selectionStart
+                etCardNumber.setText(formatted.toString())
+                val newCursorPosition = (cursorPosition + (formatted.toString().length - previousText.length))
+                    .coerceAtMost(formatted.length)
+                etCardNumber.setSelection(newCursorPosition)
+                isFormatting = false
+            }
+        })
+
+        // TextWatcher для форматування терміну дії у форматі "MM/YY"
+        etExpiry.addTextChangedListener(object : TextWatcher {
+            var isUpdating = false
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (isUpdating) return
+                isUpdating = true
+                var digits = s.toString().replace("[^\\d]".toRegex(), "")
+                if (digits.length > 4) digits = digits.substring(0, 4)
+                val formatted = if (digits.length >= 3) {
+                    digits.substring(0, 2) + "/" + digits.substring(2)
+                } else {
+                    digits
+                }
+                etExpiry.setText(formatted)
+                etExpiry.setSelection(formatted.length)
+                isUpdating = false
+            }
+        })
+
+        // Обмеження для поля CVV до 3 символів
+        etCVV.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(3))
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.rgPaymentMethod)
         val cardPaymentFields = view.findViewById<LinearLayout>(R.id.llCardPaymentFields)
@@ -145,17 +212,73 @@ class PaymentFragment : Fragment() {
     }
 
     private fun processOrder() {
+        val radioGroup = requireView().findViewById<RadioGroup>(R.id.rgPaymentMethod)
+        if (radioGroup.checkedRadioButtonId == -1) {
+            showToast("Будь ласка, оберіть спосіб оплати")
+            return
+        }
+
+        val recipientName = etRecipientName.text.toString().trim()
+        val recipientEmail = etRecipientEmail.text.toString().trim()
+        val city = etCity.text.toString().trim()
+        val department = etDepartment.text.toString().trim()
+
+        if (recipientName.isEmpty()) {
+            showToast("Будь ласка, введіть ім'я отримувача")
+            return
+        }
+        if (recipientEmail.isEmpty()) {
+            showToast("Будь ласка, введіть пошту отримувача")
+            return
+        }
+        if (city.isEmpty()) {
+            showToast("Будь ласка, введіть місто доставки")
+            return
+        }
+        if (department.isEmpty()) {
+            showToast("Будь ласка, введіть відділення доставки")
+            return
+        }
+
+        val isCardPayment = radioGroup.checkedRadioButtonId == R.id.rbCardPayment
+        if (isCardPayment) {
+            val cardNumber = etCardNumber.text.toString().trim()
+            val expiry = etExpiry.text.toString().trim()
+            val cvv = etCVV.text.toString().trim()
+
+            if (cardNumber.isEmpty()) {
+                showToast("Будь ласка, введіть номер карти")
+                return
+            }
+            if (!cardNumber.replace(" ", "").matches(Regex("^\\d{16}$"))) {
+                showToast("Номер карти має містити рівно 16 цифр")
+                return
+            }
+
+            if (expiry.isEmpty()) {
+                showToast("Будь ласка, введіть термін дії карти")
+                return
+            }
+            if (!expiry.matches(Regex("^(0[1-9]|1[0-2])/\\d{2}$"))) {
+                showToast("Термін дії має бути у форматі MM/YY, де MM від 01 до 12")
+                return
+            }
+
+            if (cvv.isEmpty()) {
+                showToast("Будь ласка, введіть CVV")
+                return
+            }
+            if (!cvv.matches(Regex("^\\d{3}$"))) {
+                showToast("CVV має складатися з 3 цифр")
+                return
+            }
+        }
+
         Thread {
             try {
-                val recipientName = etRecipientName.text.toString().trim()
-                val recipientEmail = etRecipientEmail.text.toString().trim()
-                val city = etCity.text.toString().trim()
-                val department = etDepartment.text.toString().trim()
                 val deliveryInfo = "$city, $department"
-                val paymentMethod = if (view?.findViewById<RadioGroup>(R.id.rgPaymentMethod)
-                        ?.checkedRadioButtonId == R.id.rbCashOnDelivery
-                ) "при отриманні" else "карта"
-
+                val paymentMethod = if (radioGroup.checkedRadioButtonId == R.id.rbCashOnDelivery)
+                    "при отриманні" else "карта"
                 val totalCost = orderItems.sumOf { it.product.price * it.cartItem.quantity }
                 val orderDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
@@ -198,5 +321,11 @@ class PaymentFragment : Fragment() {
                 }
             }
         }.start()
+    }
+
+    private fun showToast(message: String) {
+        requireActivity().runOnUiThread {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
     }
 }

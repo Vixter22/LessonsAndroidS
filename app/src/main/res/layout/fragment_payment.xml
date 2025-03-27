@@ -353,7 +353,8 @@
                             android:hint="Номер карти"
                             android:background="@drawable/edit_text_no_shadow"
                             android:padding="8dp"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:inputType="number" />
 
                         <!-- Контейнер для Термін дії та CVV -->
                         <LinearLayout
@@ -382,10 +383,11 @@
                                     android:id="@+id/etExpiry"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="MM/YY"
+                                    android:hint="MMYY"
                                     android:background="@drawable/edit_text_no_shadow"
                                     android:padding="8dp"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    android:inputType="number" />
                             </LinearLayout>
 
                             <!-- Контейнер для CVV -->
@@ -412,7 +414,8 @@
                                     android:hint="CVV"
                                     android:background="@drawable/edit_text_no_shadow"
                                     android:padding="8dp"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    android:inputType="number" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>

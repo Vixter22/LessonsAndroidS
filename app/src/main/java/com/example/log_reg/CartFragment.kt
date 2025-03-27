@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +22,14 @@ import kotlinx.coroutines.withContext
 
 class CartFragment : Fragment() {
 
-    // Приклад userId – отримуйте його з сесії або передавайте як аргумент
     private val userId: Int = 1
     private lateinit var cartAdapter: CartAdapter
     private lateinit var tvEmptyCart: TextView
     private lateinit var tvTotalCost: TextView
     private lateinit var btnPay: Button
+
+    // Змінна для зберігання поточного списку товарів кошика
+    private var currentCartDisplayItems: List<CartDisplayItem> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +40,6 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Переходимо до WishlistFragment при кліку на іконку сердечка
         val wishlistIcon = view.findViewById<ImageView>(R.id.ivWishlist)
         wishlistIcon.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
@@ -63,7 +64,7 @@ class CartFragment : Fragment() {
                 updateCartItemQuantity(cartDisplayItem, cartDisplayItem.cartItem.quantity + 1)
             },
             onDecreaseClick = { cartDisplayItem ->
-                // Логіка зменшення: якщо кількість більше 1, зменшуємо, інакше – видаляємо товар
+                // Якщо кількість більше 1, зменшуємо, інакше – видаляємо товар
                 if (cartDisplayItem.cartItem.quantity > 1) {
                     updateCartItemQuantity(cartDisplayItem, cartDisplayItem.cartItem.quantity - 1)
                 } else {
@@ -74,10 +75,15 @@ class CartFragment : Fragment() {
         recyclerView.adapter = cartAdapter
 
         btnPay.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, PaymentFragment())
-                .addToBackStack(null)
-                .commit()
+            // Перевіряємо, чи кошик порожній
+            if (currentCartDisplayItems.isEmpty()) {
+                Toast.makeText(requireContext(), "Корзина порожня", Toast.LENGTH_SHORT).show()
+            } else {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, PaymentFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         loadCartItems()
@@ -94,10 +100,11 @@ class CartFragment : Fragment() {
                     cartItems.mapNotNull { cartItem ->
                         val product = db.productDao().getProductByIdSync(cartItem.productId)
                         if (product != null) {
-                            com.example.log_reg.data.CartDisplayItem(cartItem, product)
+                            CartDisplayItem(cartItem, product)
                         } else null
                     }
                 }
+                currentCartDisplayItems = cartDisplayItems
                 cartAdapter.updateList(cartDisplayItems)
                 updateTotalCost(cartDisplayItems)
                 tvEmptyCart.visibility = if (cartDisplayItems.isEmpty()) View.VISIBLE else View.GONE
