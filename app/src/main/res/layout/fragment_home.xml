@@ -24,7 +24,7 @@
             android:gravity="center_vertical"
             android:padding="8dp">
 
-            <!-- Поле пошуку з лупою і червоним обведенням -->
+            <!-- Поле пошуку з лупою -->
             <EditText
                 android:id="@+id/etSearch"
                 android:layout_width="0dp"
@@ -43,12 +43,11 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="0dp"
                 android:src="@drawable/ic_heart_outline"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView для відображення списку продуктів -->
+    <!-- RecyclerView для відображення списку товарів -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"

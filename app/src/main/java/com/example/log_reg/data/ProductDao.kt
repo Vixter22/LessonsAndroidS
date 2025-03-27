@@ -12,14 +12,18 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(products: List<Product>): List<Long>
 
-    // LiveData для спостереження
+    // LiveData для спостереження за всіма товарами
     @Query("SELECT * FROM products")
     fun getAllProducts(): LiveData<List<Product>>
 
-    // Синхронний виклик, щоб перевірити чи є дані
+    // Синхронний виклик для перевірки наявності даних
     @Query("SELECT * FROM products")
     fun getAllProductsSync(): List<Product>
 
     @Query("SELECT * FROM products WHERE id = :productId LIMIT 1")
     fun getProductByIdSync(productId: Int): Product?
+
+    // Новий метод для пошуку за назвою товару
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :query || '%'")
+    fun getProductsByName(query: String): LiveData<List<Product>>
 }
