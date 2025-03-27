@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.log_reg.data.AppDatabase
+import com.example.log_reg.data.User
+import com.example.log_reg.fragments.AdminPanelFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +34,25 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         database = AppDatabase.getInstance(requireContext())
+
+        // Заповнення БД: перевірка чи існує користувач з логіном "admin".
+        // Якщо ні, створюємо користувача з роллю ADMIN.
+        lifecycleScope.launch(Dispatchers.IO) {
+            val adminUser = database.userDao().getUserSync("admin")
+            if (adminUser == null) {
+                val newAdmin = User(
+                    username = "admin",
+                    password = "admin",
+                    role = "ADMIN",
+                    name = "Administrator",
+                    email = "admin@example.com",
+                    birthDate = "2000-01-01",
+                    about = "Адміністратор системи",
+                    avatar = null
+                )
+                database.userDao().registerUser(newAdmin)
+            }
+        }
 
         editTextUsername = view.findViewById(R.id.editTextUsername)
         editTextPassword = view.findViewById(R.id.editTextPassword)
@@ -56,9 +77,16 @@ class LoginFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 if (user != null) {
                     Toast.makeText(activity, "Вхід успішний!", Toast.LENGTH_SHORT).show()
-                    // Зберігаємо username та userId для поточної сесії
                     saveLoginState(username, user.id)
-                    (activity as? MainActivity)?.loginSuccess()
+                    // Якщо роль ADMIN, то виконуємо перехід на адмін-панель прямо тут
+                    if (user.role.uppercase() == "ADMIN") {
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, AdminPanelFragment())
+                            .commit()
+                    } else {
+                        // Для звичайних користувачів викликаємо метод логіну з MainActivity
+                        (activity as? MainActivity)?.loginSuccess()
+                    }
                 } else {
                     Toast.makeText(activity, "Невірний логін або пароль!", Toast.LENGTH_SHORT).show()
                 }
@@ -71,10 +99,9 @@ class LoginFragment : Fragment() {
         with(sessionPref.edit()) {
             putBoolean("isLoggedIn", true)
             putString("current_user", username)
-            putInt("current_user_id", userId) // Переконуємось, що userId зберігається
+            putInt("current_user_id", userId)
             apply()
         }
-        Toast.makeText(requireContext(), "Збережено userId: $userId", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToRegister() {
