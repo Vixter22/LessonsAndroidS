@@ -26,4 +26,7 @@ interface ProductDao {
     // Новий метод для пошуку за назвою товару
     @Query("SELECT * FROM products WHERE name LIKE '%' || :query || '%'")
     fun getProductsByName(query: String): LiveData<List<Product>>
+
+    @Query("DELETE FROM products WHERE id = :productId")
+    fun deleteProduct(productId: Int): Int
 }

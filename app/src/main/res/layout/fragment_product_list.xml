@@ -13,8 +13,7 @@
         android:layout_height="56dp"
         app:cardElevation="4dp"
         app:cardCornerRadius="0dp"
-        app:cardBackgroundColor="#FFFFFF"
-        android:layout_margin="0dp">
+        app:cardBackgroundColor="#FFFFFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,12 +42,104 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Основний контент для списку товарів -->
+    <!-- Заголовок таблиці для сортування з вертикальними розділювачами -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="4dp"
-        android:background="#f0f0f5">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#FFFFFF">
+
+        <!-- Колонка ID (зменшена) -->
+        <TextView
+            android:id="@+id/tvHeaderId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="ID"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Вертикальна лінія -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Колонка Назва (збільшена) -->
+        <TextView
+            android:id="@+id/tvHeaderName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.5"
+            android:text="Назва"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Вертикальна лінія -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Колонка Ціна -->
+        <TextView
+            android:id="@+id/tvHeaderPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ціна"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginStart="3dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Вертикальна лінія -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Колонка Дія -->
+        <TextView
+            android:id="@+id/tvHeaderAction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Дія"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
+
+    <!-- Горизонтальна лінія під заголовками таблиці -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
+    <!-- RecyclerView для виводу списку товарів -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
