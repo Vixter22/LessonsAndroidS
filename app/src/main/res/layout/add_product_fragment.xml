@@ -54,24 +54,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Обов'язкові поля (символ * у підказці) -->
             <EditText
                 android:id="@+id/etProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Назва товару" />
+                android:hint="Назва товару *" />
 
             <EditText
                 android:id="@+id/etProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Опис товару"
+                android:hint="Опис товару *"
                 android:layout_marginTop="8dp" />
 
             <EditText
                 android:id="@+id/etProductPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ціна"
+                android:hint="Ціна *"
                 android:inputType="numberDecimal"
                 android:layout_marginTop="8dp" />
 
@@ -79,28 +80,47 @@
                 android:id="@+id/etProductStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Кількість на складі"
+                android:hint="Кількість на складі *"
                 android:inputType="number"
                 android:layout_marginTop="8dp" />
 
-            <!-- Image selection: при натисканні відкривається галерея -->
-            <ImageView
-                android:id="@+id/ivProductImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/ic_addproduct"
-                android:contentDescription="Вибрати зображення"
+            <!-- Контейнер для вибору зображення -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp">
 
-            <!-- Кнопка для додавання товару -->
-            <Button
+                <ImageView
+                    android:id="@+id/ivProductImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_addproduct"
+                    android:contentDescription="Виберіть фото"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvSelectImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Виберіть фото"
+                    android:textColor="#000000"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Кнопка для додавання товару з новим стилем -->
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAddProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_red"
+                android:backgroundTint="@null"
                 android:text="Додати товар"
-                android:layout_marginTop="16dp" />
+                android:textColor="@android:color/white"
+                style="@null"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

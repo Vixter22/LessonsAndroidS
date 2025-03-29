@@ -77,7 +77,7 @@ class AddProductFragment : Fragment() {
             val stock = etStock.text.toString().toIntOrNull() ?: 0
 
             if (name.isEmpty() || description.isEmpty() || price <= 0 || stock < 0 || selectedImageUri.isEmpty()){
-                Toast.makeText(requireContext(), "Будь ласка, заповніть всі поля і виберіть зображення", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Будь ласка, заповніть всі поля та виберіть зображення", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
