@@ -2,9 +2,12 @@ package com.example.log_reg.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -26,6 +29,7 @@ class ProductListFragment : Fragment() {
     private lateinit var tvHeaderName: TextView
     private lateinit var tvHeaderPrice: TextView
     private lateinit var rvProducts: RecyclerView
+    private lateinit var etSearch: EditText
     private lateinit var productListAdapter: ProductListAdapter
 
     private var currentSortField: String = "id"
@@ -47,6 +51,7 @@ class ProductListFragment : Fragment() {
         tvHeaderName = view.findViewById(R.id.tvHeaderName)
         tvHeaderPrice = view.findViewById(R.id.tvHeaderPrice)
         rvProducts = view.findViewById(R.id.rvProducts)
+        etSearch = view.findViewById(R.id.etSearch)
 
         ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -57,7 +62,7 @@ class ProductListFragment : Fragment() {
         productListAdapter = ProductListAdapter(emptyList())
         rvProducts.adapter = productListAdapter
 
-        // Встановлюємо callback для видалення товару з підтвердженням
+        // Callback для видалення товару
         productListAdapter.onDeleteClick = { product ->
             AlertDialog.Builder(requireContext())
                 .setTitle("Видалення товару")
@@ -73,7 +78,7 @@ class ProductListFragment : Fragment() {
 
         database = AppDatabase.getInstance(requireContext())
 
-        // Підписка на зміни списку товарів
+        // Первинне завантаження всіх товарів
         database.productDao().getAllProducts().observe(viewLifecycleOwner, Observer { products ->
             allProducts = products
             sortProducts()
@@ -83,6 +88,28 @@ class ProductListFragment : Fragment() {
         tvHeaderId.setOnClickListener { toggleSort("id") }
         tvHeaderName.setOnClickListener { toggleSort("name") }
         tvHeaderPrice.setOnClickListener { toggleSort("price") }
+
+        // Обробка пошуку: при зміні тексту оновлюємо список товарів
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val query = s.toString().trim()
+                if (query.isEmpty()) {
+                    // Якщо поле порожнє – відображаємо всі товари
+                    database.productDao().getAllProducts().observe(viewLifecycleOwner, Observer { products ->
+                        allProducts = products
+                        sortProducts()
+                    })
+                } else {
+                    // Інакше – шукаємо товари за назвою
+                    database.productDao().getProductsByName(query).observe(viewLifecycleOwner, Observer { products ->
+                        allProducts = products
+                        sortProducts()
+                    })
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     private fun toggleSort(field: String) {

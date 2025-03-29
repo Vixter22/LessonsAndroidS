@@ -42,7 +42,25 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Заголовок таблиці для сортування з вертикальними розділювачами -->
+    <!-- Поле пошуку (розташовано під шапкою) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#FFFFFF">
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Пошук"
+            android:padding="8dp"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:background="@drawable/search_edittext_background"/>
+    </LinearLayout>
+
+    <!-- Заголовок таблиці для сортування -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +91,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp" />
 
-        <!-- Колонка Назва (збільшена) -->
+        <!-- Колонка Назва -->
         <TextView
             android:id="@+id/tvHeaderName"
             android:layout_width="0dp"
