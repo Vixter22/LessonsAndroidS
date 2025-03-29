@@ -25,11 +25,12 @@ import kotlinx.coroutines.withContext
 class ProductListFragment : Fragment() {
 
     private lateinit var ivBack: ImageView
+    private lateinit var ivAddProduct: ImageView
     private lateinit var tvHeaderId: TextView
     private lateinit var tvHeaderName: TextView
     private lateinit var tvHeaderPrice: TextView
-    private lateinit var rvProducts: RecyclerView
     private lateinit var etSearch: EditText
+    private lateinit var rvProducts: RecyclerView
     private lateinit var productListAdapter: ProductListAdapter
 
     private var currentSortField: String = "id"
@@ -47,14 +48,23 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ivBack = view.findViewById(R.id.ivBack)
+        ivAddProduct = view.findViewById(R.id.ivAddProduct)
         tvHeaderId = view.findViewById(R.id.tvHeaderId)
         tvHeaderName = view.findViewById(R.id.tvHeaderName)
         tvHeaderPrice = view.findViewById(R.id.tvHeaderPrice)
-        rvProducts = view.findViewById(R.id.rvProducts)
         etSearch = view.findViewById(R.id.etSearch)
+        rvProducts = view.findViewById(R.id.rvProducts)
 
         ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        ivAddProduct.setOnClickListener {
+            // Відкриваємо фрагмент для додавання товару
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddProductFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         // Налаштовуємо RecyclerView
