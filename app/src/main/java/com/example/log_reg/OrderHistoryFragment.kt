@@ -1,5 +1,6 @@
 package com.example.log_reg
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,7 +18,7 @@ import java.util.*
 
 class OrderHistoryFragment : Fragment() {
 
-    private val userId: Int = 1
+    private var userId: Int = -1
     private lateinit var rvOrderHistory: RecyclerView
     private lateinit var orderHistoryAdapter: OrderHistoryAdapter
     private var orderHistoryList: MutableList<OrderHistoryDisplayItem> = mutableListOf()
@@ -31,6 +32,16 @@ class OrderHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Отримання userId з SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        userId = sharedPref.getInt("current_user_id", -1)
+        if (userId == -1) {
+            Log.e("OrderHistoryFragment", "User ID не знайдено в SharedPreferences")
+        } else {
+            Log.d("OrderHistoryFragment", "Поточний userId: $userId")
+        }
+
         val ivBackOrder = view.findViewById<ImageView>(R.id.ivBackOrder)
         ivBackOrder.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()

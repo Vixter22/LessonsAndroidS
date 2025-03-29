@@ -1,5 +1,6 @@
 package com.example.log_reg
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 class CartFragment : Fragment() {
 
-    private val userId: Int = 1
+    private var userId: Int = -1
     private lateinit var cartAdapter: CartAdapter
     private lateinit var tvEmptyCart: TextView
     private lateinit var tvTotalCost: TextView
@@ -40,6 +41,16 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Отримання userId з SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        userId = sharedPref.getInt("current_user_id", -1)
+        if (userId == -1) {
+            Log.e("CartFragment", "User ID не знайдено в SharedPreferences")
+        } else {
+            Log.d("CartFragment", "Поточний userId: $userId")
+        }
+
         val wishlistIcon = view.findViewById<ImageView>(R.id.ivWishlist)
         wishlistIcon.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()

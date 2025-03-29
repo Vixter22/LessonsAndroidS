@@ -22,7 +22,7 @@ import java.util.*
 
 class PaymentFragment : Fragment() {
 
-    private val userId: Int = 1
+    private var userId: Int = -1
     private lateinit var orderAdapter: OrderAdapter
     private lateinit var recyclerViewOrder: RecyclerView
     private lateinit var etRecipientName: EditText
@@ -49,6 +49,15 @@ class PaymentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Отримання userId з SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        userId = sharedPref.getInt("current_user_id", -1)
+        if (userId == -1) {
+            Log.e("PaymentFragment", "User ID не знайдено в SharedPreferences")
+        } else {
+            Log.d("PaymentFragment", "Поточний userId: $userId")
+        }
 
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
         ivBack.setOnClickListener {
@@ -87,7 +96,6 @@ class PaymentFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 if (isFormatting) return
-
                 isFormatting = true
                 val digitsOnly = s.toString().replace(" ", "")
                 val limited = if (digitsOnly.length > 16) digitsOnly.substring(0, 16) else digitsOnly
@@ -254,7 +262,6 @@ class PaymentFragment : Fragment() {
                 showToast("Номер карти має містити рівно 16 цифр")
                 return
             }
-
             if (expiry.isEmpty()) {
                 showToast("Будь ласка, введіть термін дії карти")
                 return
@@ -263,7 +270,6 @@ class PaymentFragment : Fragment() {
                 showToast("Термін дії має бути у форматі MM/YY, де MM від 01 до 12")
                 return
             }
-
             if (cvv.isEmpty()) {
                 showToast("Будь ласка, введіть CVV")
                 return

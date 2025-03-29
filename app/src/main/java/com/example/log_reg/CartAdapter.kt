@@ -67,7 +67,6 @@ class CartAdapter(
 
         // Обробка кліку для зменшення кількості
         holder.imageViewMinus.setOnClickListener {
-            // Якщо кнопка активна, викликаємо onDecreaseClick
             if (holder.imageViewMinus.isEnabled) {
                 onDecreaseClick(item)
             }

@@ -1,5 +1,6 @@
 package com.example.log_reg
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,33 +25,43 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
     private var currentLiveData: LiveData<List<Product>>? = null
+    private var currentUserId: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Використання оновленого layout із контейнером для пошуку (якщо потрібно)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Отримуємо userId з SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        currentUserId = sharedPref.getInt("current_user_id", -1)
+
+        if (currentUserId == -1) {
+            Log.e("HomeFragment", "User ID не знайдено в SharedPreferences")
+        } else {
+            Log.d("HomeFragment", "Поточний userId: $currentUserId")
+        }
+
         // Ініціалізація RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // Отримання екземпляра бази даних та DAO
+        // Отримання бази даних та DAO
         val db = AppDatabase.getInstance(requireContext())
         val productDao = db.productDao()
         val wishlistDao = db.wishlistItemDao()
         val cartItemDao = db.cartItemDao()
 
-        // Ініціалізація адаптера (userId = 1, перевірте, що в таблиці User існує запис з id 1)
-        productAdapter = ProductAdapter(emptyList(), wishlistDao, cartItemDao, 1)
+        // Ініціалізація адаптера з актуальним userId
+        productAdapter = ProductAdapter(emptyList(), wishlistDao, cartItemDao, currentUserId)
         recyclerView.adapter = productAdapter
 
-        // Обробка кліку на іконку вішліста для переходу до WishlistFragment
+        // Клік по сердечку (перехід до Wishlist)
         val heartIcon = view.findViewById<ImageView>(R.id.ivWishlist)
         heartIcon.setOnClickListener {
             val wishlistFragment = WishlistFragment()
@@ -60,7 +71,7 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
-        // Вставка тестових продуктів, якщо таблиця порожня
+        // Вставка тестових продуктів
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val existingProducts = productDao.getAllProductsSync()
@@ -104,14 +115,11 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Отримання посилання на поле пошуку
+        // Пошук
         val searchEditText = view.findViewById<EditText>(R.id.etSearch)
 
-        // Функція для підписки на потрібне LiveData в залежності від тексту пошуку
         fun observeProducts(query: String) {
-            // Видаляємо попередні спостереження
             currentLiveData?.removeObservers(viewLifecycleOwner)
-            // Визначаємо, яке LiveData використовувати: якщо запит порожній – показуємо всі товари, інакше – шукаємо за іменем
             currentLiveData = if (query.isEmpty()) {
                 productDao.getAllProducts()
             } else {
@@ -122,17 +130,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Спостереження за змінами тексту в полі пошуку
         searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(editable: Editable?) {
                 val query = editable?.toString()?.trim() ?: ""
                 observeProducts(query)
             }
         })
 
-        // Початкове спостереження (якщо поле пошуку порожнє)
+        // Стартове спостереження
         observeProducts("")
     }
 }
