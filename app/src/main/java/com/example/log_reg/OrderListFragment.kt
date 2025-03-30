@@ -47,7 +47,17 @@ class OrderListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rvOrderList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        orderListAdapter = OrderListAdapter(emptyList())
+        // Ініціалізуємо адаптер із реалізацією слухача кліків
+        orderListAdapter = OrderListAdapter(emptyList(), object : OrderListAdapter.OnOrderClickListener {
+            override fun onOrderClick(order: Order) {
+                // Створюємо фрагмент деталей замовлення, передаючи id замовлення
+                val orderDetailsFragment = OrderDetailsFragment.newInstance(order.id)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, orderDetailsFragment) // Замініть R.id.fragment_container на id контейнера у вашій Activity
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
         recyclerView.adapter = orderListAdapter
 
         // Отримуємо посилання на заголовки для сортування

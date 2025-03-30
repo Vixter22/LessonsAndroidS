@@ -9,8 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.log_reg.data.Order
 
 class OrderListAdapter(
-    private var orderList: List<Order>
+    private var orderList: List<Order>,
+    private val listener: OnOrderClickListener
 ) : RecyclerView.Adapter<OrderListAdapter.OrderViewHolder>() {
+
+    interface OnOrderClickListener {
+        fun onOrderClick(order: Order)
+    }
 
     inner class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvOrderId: TextView = itemView.findViewById(R.id.tvOrderId)
@@ -33,10 +38,11 @@ class OrderListAdapter(
         holder.tvOrderId.text = order.id.toString()
         holder.tvOrderStatus.text = order.status
         holder.tvOrderDate.text = order.orderDate
-        // Виводимо тільки число, без "грн"
         holder.tvOrderTotal.text = order.totalCost.toString()
+
+        // Обробка кліку по іконці "око"
         holder.ivOrderAction.setOnClickListener {
-            // Реалізуйте перехід до деталей замовлення, якщо потрібно
+            listener.onOrderClick(order)
         }
     }
 

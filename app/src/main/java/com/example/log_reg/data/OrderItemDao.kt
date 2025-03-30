@@ -12,4 +12,5 @@ interface OrderItemDao {
 
     @Query("SELECT * FROM order_items WHERE orderId = :orderId")
     fun getOrderItemsForOrder(orderId: Int): List<OrderItem>
+
 }
