@@ -43,13 +43,114 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Основний контент для списку замовлень -->
+    <!-- Заголовок таблиці (стовпці) з вертикальними лініями -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="4dp"
-        android:background="#f0f0f5">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#FFFFFF">
 
+        <!-- Колонка ID -->
+        <TextView
+            android:id="@+id/tvHeaderOrderId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ID"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"/>
+
+        <!-- Колонка Статус -->
+        <TextView
+            android:id="@+id/tvHeaderStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Статус"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Колонка Дата -->
+        <TextView
+            android:id="@+id/tvHeaderDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Дата"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Колонка Загальна сума -->
+        <TextView
+            android:id="@+id/tvHeaderTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Сума"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Колонка Дія -->
+        <TextView
+            android:id="@+id/tvHeaderAction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Дія"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
     </LinearLayout>
+
+    <!-- Горизонтальна лінія під заголовком таблиці -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"/>
+
+    <!-- RecyclerView для списку замовлень -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOrderList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

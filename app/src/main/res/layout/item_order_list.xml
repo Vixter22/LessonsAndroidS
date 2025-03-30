@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- Рядок замовлення з вертикальними розділювачами -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <!-- Колонка ID -->
+        <TextView
+            android:id="@+id/tvOrderId"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="0.5"
+            android:textSize="14sp"
+            android:gravity="center"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="-3dp"
+            android:layout_marginEnd="0dp"/>
+
+        <!-- Колонка Статус -->
+        <TextView
+            android:id="@+id/tvOrderStatus"
+            android:layout_width="0dp"
+            android:layout_weight="1.2"
+            android:layout_height="wrap_content"
+            android:text="pending"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="5dp"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="-1dp"
+            android:layout_marginEnd="0dp"/>
+
+        <!-- Колонка Дата -->
+        <TextView
+            android:id="@+id/tvOrderDate"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:text="2023-01-01"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Колонка Загальна сума -->
+        <TextView
+            android:id="@+id/tvOrderTotal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"/>
+
+        <!-- Вертикальний розділювач -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"/>
+
+        <!-- Колонка Дія: іконка "око" -->
+        <ImageView
+            android:id="@+id/ivOrderAction"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_eye"
+            android:contentDescription="Переглянути"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"/>
+    </LinearLayout>
+
+    <!-- Горизонтальна розділююча лінія між рядками -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"/>
+</LinearLayout>
