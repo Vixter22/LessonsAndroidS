@@ -141,7 +141,7 @@ class OrderDetailsFragment : Fragment() {
 
     // Метод для відображення діалогу зміни статусу
     private fun showChangeStatusDialog(order: Order) {
-        val statusOptions = arrayOf("оформлено", "виконано", "скасовано")
+        val statusOptions = arrayOf("Оформлено", "Виконано", "Скасовано")
         AlertDialog.Builder(requireContext())
             .setTitle("Виберіть новий статус")
             .setItems(statusOptions) { _, which ->
