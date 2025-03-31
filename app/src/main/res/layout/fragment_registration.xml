@@ -80,13 +80,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Дата народження (дд-мм-рррр)"
-            android:inputType="text"
+            android:inputType="none"
             android:maxLength="10"
             android:background="@drawable/edittext_background"
             android:padding="12dp"
             android:elevation="4dp"
             android:textColor="#3E3E3E"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:focusable="false"/>
 
         <!-- Поле введення "Про себе" -->
         <EditText

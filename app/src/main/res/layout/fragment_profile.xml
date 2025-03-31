@@ -258,9 +258,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Дата народження (дд-мм-рррр)"
-                            android:inputType="date"
+                            android:inputType="none"
                             android:background="@drawable/edit_text_no_shadow"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:focusable="false"
+                            android:clickable="true" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

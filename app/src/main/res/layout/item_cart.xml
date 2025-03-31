@@ -1,97 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="5dp"
-    android:background="#FFFFFF"
-    android:padding="8dp">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Зображення товару -->
-        <ImageView
-            android:id="@+id/imageViewCartProduct"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"/>
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="8dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingStart="8dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <!-- Назва товару -->
-            <TextView
-                android:id="@+id/textViewCartProductName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Назва товару"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <!-- Зображення товару -->
+            <ImageView
+                android:id="@+id/imageViewCartProduct"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"/>
 
-            <!-- Ціна (розрахована як базова * кількість) -->
-            <TextView
-                android:id="@+id/textViewCartProductPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ціна: 0 грн"
-                android:textColor="#FF0000"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"/>
-
-            <!-- Блок управління кількістю -->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="8dp">
 
-                <!-- Іконка зменшення -->
-                <ImageView
-                    android:id="@+id/imageViewMinus"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_minus"
-                    android:contentDescription="Зменшити кількість"/>
-
-                <!-- Текст з кількістю -->
+                <!-- Назва товару -->
                 <TextView
-                    android:id="@+id/textViewCartQuantity"
+                    android:id="@+id/textViewCartProductName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1"
+                    android:text="Назва товару"
                     android:textSize="16sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"/>
+                    android:textStyle="bold" />
 
-                <!-- Іконка збільшення -->
-                <ImageView
-                    android:id="@+id/imageViewPlus"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_plus"
-                    android:contentDescription="Збільшити кількість"/>
+                <!-- Ціна (розрахована як базова * кількість) -->
+                <TextView
+                    android:id="@+id/textViewCartProductPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ціна: 0 грн"
+                    android:textColor="#FF0000"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"/>
+
+                <!-- Блок управління кількістю -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Іконка зменшення -->
+                    <ImageView
+                        android:id="@+id/imageViewMinus"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_minus"
+                        android:contentDescription="Зменшити кількість"/>
+
+                    <!-- Текст з кількістю -->
+                    <TextView
+                        android:id="@+id/textViewCartQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textSize="16sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <!-- Іконка збільшення -->
+                    <ImageView
+                        android:id="@+id/imageViewPlus"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_plus"
+                        android:contentDescription="Збільшити кількість"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Іконка видалення товару (збільшена) -->
-        <ImageView
-            android:id="@+id/imageViewDelete"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="Видалити товар"/>
+            <!-- Іконка видалення товару (збільшена) -->
+            <ImageView
+                android:id="@+id/imageViewDelete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Видалити товар"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

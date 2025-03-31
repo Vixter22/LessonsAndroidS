@@ -1,5 +1,6 @@
 package com.example.log_reg
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -15,6 +16,9 @@ import com.example.log_reg.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class RegistrationFragment : Fragment() {
 
@@ -49,8 +53,32 @@ class RegistrationFragment : Fragment() {
         buttonRegister = view.findViewById(R.id.buttonRegister)
         buttonBack = view.findViewById(R.id.buttonBack)
 
+        // Налаштування відкриття календаря при натисканні на поле дати народження
+        editTextBirthDate.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         buttonRegister.setOnClickListener { registerUser() }
         buttonBack.setOnClickListener { requireActivity().supportFragmentManager.popBackStack() }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
+                editTextBirthDate.setText(formattedDate)
+            },
+            currentYear,
+            currentMonth,
+            currentDay
+        )
+        datePickerDialog.show()
     }
 
     private fun registerUser() {
@@ -65,6 +93,12 @@ class RegistrationFragment : Fragment() {
             email.isEmpty() || birthDate.isEmpty() || about.isEmpty()
         ) {
             Toast.makeText(activity, "Заповніть усі поля!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Перевірка, що пароль має мінімум 8 символів
+        if (password.length < 8) {
+            Toast.makeText(activity, "Пароль має бути не менше 8 символів!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -88,7 +122,7 @@ class RegistrationFragment : Fragment() {
                 return@launch
             }
 
-            // Створюємо нового користувача (роль за замовчуванням – CLIENT)
+            // Створення нового користувача з роллю CLIENT
             val newUser = User(
                 username = username,
                 password = password,
@@ -100,7 +134,7 @@ class RegistrationFragment : Fragment() {
                 avatar = null
             )
 
-            // Вставка нового користувача
+            // Реєстрація нового користувача
             database.userDao().registerUser(newUser)
 
             withContext(Dispatchers.Main) {

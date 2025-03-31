@@ -1,6 +1,7 @@
 package com.example.log_reg
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Calendar
 
 class ProfileFragment : Fragment() {
 
@@ -107,7 +108,6 @@ class ProfileFragment : Fragment() {
 
         // Обробка кліку на контейнер "Мої замовлення"
         orderManagementLayout.setOnClickListener {
-            // Перехід до OrderHistoryFragment
             val orderHistoryFragment = OrderHistoryFragment()
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, orderHistoryFragment)
@@ -118,6 +118,11 @@ class ProfileFragment : Fragment() {
         // Обробка кліку на кнопку видалення акаунту
         deleteAccountButton.setOnClickListener {
             confirmDeleteAccount()
+        }
+
+        // Встановлення кліку на поле дати народження для відкриття календаря
+        editTextBirthDate.setOnClickListener {
+            showDatePickerDialog()
         }
     }
 
@@ -213,5 +218,25 @@ class ProfileFragment : Fragment() {
             }
             .setNegativeButton("Скасувати", null)
             .show()
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                // Форматування дати у вигляді дд-мм-рррр (selectedMonth починається з 0)
+                val formattedDate = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
+                editTextBirthDate.setText(formattedDate)
+            },
+            currentYear,
+            currentMonth,
+            currentDay
+        )
+        datePickerDialog.show()
     }
 }
